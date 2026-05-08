@@ -435,6 +435,12 @@ Route::delete('/admin/pengguna/{id}', function ($id) {
 })->name('pengguna.destroy');
 
 // ===== PEMESANAN MENU =====
+// Form untuk membuat pemesanan baru (halaman terpisah)
+Route::get('/gizi/pemesanan-menu/create', function () {
+    $rooms = DB::table('operating_rooms')->orderBy('nama_ruang')->get();
+    return view('gizi.create-pemesanan-menu', compact('rooms'));
+})->name('pemesanan-menu.create');
+
 Route::get('/gizi/pemesanan-menu', function () {
     $menus = DB::table('pemesanan_menu')->orderBy('tanggal', 'desc')->get();
     return view('gizi.pemesanan-menu', compact('menus'));
