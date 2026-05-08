@@ -129,10 +129,22 @@
                 <div>
                     <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">Dashboard Utama</h2>
                     <p class="text-sm text-gray-500 mt-1 font-medium">Ringkasan aktivitas hari ini, {{ date('d F Y') }}</p>
+                    @isset($userRole)
+                        <p class="text-xs mt-2 text-gray-500">Role: <span class="font-bold text-sm text-amber-600">{{ ucfirst($userRole) }}</span>
+                        @if(!empty($isPJAdmin)) <span class="ml-3 inline-block px-2 py-0.5 bg-green-100 text-green-700 rounded text-xs font-bold">PJ Admin</span> @endif
+                        @if(!empty($isDPJP)) <span class="ml-2 inline-block px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs font-bold">DPJP</span> @endif
+                        </p>
+                    @endisset
                 </div>
+                @if(!empty($isPJAdmin) || !empty($isDPJP))
                 <a href="{{ url('/jadwal-operasi') }}" class="bg-primary-green hover:bg-primary-green-hover text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-primary-green/20 transition-all active:scale-95 flex items-center inline-block">
                     <i class="fa-solid fa-plus mr-2"></i> Jadwal Baru
                 </a>
+                @else
+                <a href="{{ url('/jadwal-operasi') }}" class="bg-gray-200 text-gray-600 px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all flex items-center inline-block cursor-not-allowed" title="Hanya untuk PJ Admin / DPJP">
+                    <i class="fa-solid fa-plus mr-2"></i> Jadwal Baru
+                </a>
+                @endif
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

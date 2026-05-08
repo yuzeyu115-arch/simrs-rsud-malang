@@ -103,10 +103,22 @@ Route::get('/dashboard', function () {
         $fastLogistics = null;
     }
 
+    // Determine current user role and flags for dashboard rendering
+    try {
+        $user = \Illuminate\Support\Facades\Auth::user();
+    } catch (\Exception $e) {
+        $user = null;
+    }
+
+    $userRole = $user->role ?? ($user->getRoleAttribute() ?? 'guest');
+    $isPJAdmin = in_array($userRole, ['pj_admin', 'admin', 'pj']);
+    $isDPJP = in_array($userRole, ['dpjp', 'dokter', 'dokter_bedah']);
+
     return view('dashboard', compact(
         'totalRooms', 'usedRooms', 'availableBeds', 'occupiedBeds',
         'criticalStock', 'operasiHariIni', 'appointmentHariIni',
-        'totalUsers', 'medicinePackageStock', 'visitStats', 'fastLogistics'
+        'totalUsers', 'medicinePackageStock', 'visitStats', 'fastLogistics',
+        'userRole', 'isPJAdmin', 'isDPJP'
     ));
 })->name('dashboard');
 
@@ -119,6 +131,11 @@ Route::get('/notifications', function () {
     }
     return view('notifications', compact('notifications'));
 })->name('notifications');
+
+// Public patient dashboard (no login required)
+Route::get('/patient-dashboard', function () {
+    return view('patient-dashboard');
+})->name('patient-dashboard');
 
 // Profil pengguna (tenaga medis) — diakses dari tombol profil di dashboard
 Route::get('/profile', function () {
