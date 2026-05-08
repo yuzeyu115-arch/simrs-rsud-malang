@@ -31,7 +31,7 @@ Route::get('/login', function () {
 
 // Rute Logout (GET untuk memudahkan dari sidebar)
 Route::get('/logout', function () {
-    Auth::logout();
+    \Illuminate\Support\Facades\Auth::logout();
     request()->session()->invalidate();
     request()->session()->regenerateToken();
     return redirect('/login');

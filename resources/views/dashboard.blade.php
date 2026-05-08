@@ -31,7 +31,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 flex overflow-hidden h-screen">
+<body class="bg-gray-50 flex min-h-screen">
 
     <aside class="w-64 bg-white border-r border-gray-100 flex flex-col flex-shrink-0 shadow-sm z-20">
         <div class="p-6 flex items-center space-x-3">
