@@ -43,18 +43,37 @@ Route::post('/login', function (\Illuminate\Http\Request $request) {
         'password' => ['required'],
     ]);
 
-    // Bypass login for any username and password to automatically enter dashboard
-    $user = new \App\Models\User();
-    $user->id = 1;
-    $user->name = $credentials['email'] ?? 'admin';
-    $user->email = $credentials['email'] == 'admin' ? 'admin@rs-sahabat.com' : $credentials['email'];
-    $user->password = bcrypt($credentials['password']);
-    
-    // Using Auth::login to set the session for the mock user
+    // Allow login by username or email
+    $identifier = $credentials['email'];
+
+    $user = \App\Models\User::where('email', $identifier)
+        ->orWhere('username', $identifier)
+        ->first();
+
+    if (! $user || ! \Illuminate\Support\Facades\Hash::check($credentials['password'], $user->password)) {
+        return back()->withErrors(['email' => 'Kredensial tidak cocok'])->withInput();
+    }
+
     \Illuminate\Support\Facades\Auth::login($user);
     $request->session()->regenerate();
-    
-    return redirect()->intended('dashboard');
+
+    // Redirect based on role (simple mapping)
+    $role = $user->role ?? 'guest';
+    $roleRoutes = [
+        'farmasi' => url('/farmasi'),
+        'gizi' => url('/gizi'),
+        'dokter' => url('/dashboard'),
+        'dokter_bedah' => url('/jadwal-operasi'),
+        'dokter_anestesi' => url('/jadwal-operasi'),
+        'perawat' => url('/bed-manager'),
+        'perawat_instrumentor' => url('/jadwal-operasi'),
+        'admin' => url('/admin/pengguna'),
+        'pj_admin' => url('/dashboard'),
+        'dpjp' => url('/dashboard'),
+    ];
+
+    $target = $roleRoutes[$role] ?? url('/dashboard');
+    return redirect()->intended($target);
 })->middleware('guest')->name('login.post');
 
 // 4. Rute Dashboard Utama (Dinamis dari Database dengan Fallback)
