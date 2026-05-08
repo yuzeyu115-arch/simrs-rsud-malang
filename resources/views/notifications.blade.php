@@ -55,7 +55,7 @@
                         $notes = collect([
                             (object)['id'=>1,'title'=>'Audit Inventaris Obat','body'=>'Audit stok bius dijadwalkan besok 08:00','created_at'=>now()],
                             (object)['id'=>2,'title'=>'Rapat Koordinasi','body'=>'Rapat koordinasi departemen bedah pukul 14:00','created_at'=>now()->subHour()]
-                        );
+                        ]);
                     }
                 @endphp
 
