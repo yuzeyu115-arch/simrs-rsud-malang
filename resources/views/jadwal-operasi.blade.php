@@ -95,18 +95,27 @@
         <div class="sticky top-0 bg-white/80 backdrop-blur-md px-8 py-4 z-10 flex justify-between items-center border-b border-gray-50">
             <button class="text-gray-500 text-xl"><i class="fa-solid fa-bars"></i></button>
             <div class="flex items-center space-x-6">
-                <div class="relative text-gray-400">
+                <div class="relative w-80">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input id="globalSearch" type="text" class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-xl bg-gray-50 text-sm outline-none focus:ring-2 focus:ring-primary-green/20 focus:border-primary-green transition-all" placeholder="Cari nama tenaga medis atau pasien...">
+                    <div id="searchResults" class="absolute left-0 right-0 mt-2 bg-white border border-gray-100 rounded-lg shadow-lg z-50 hidden max-h-64 overflow-auto"></div>
+                </div>
+
+                <a href="{{ url('/notifications') }}" class="relative text-gray-400 hover:text-gray-600 transition-colors">
                     <i class="fa-regular fa-bell text-xl"></i>
                     <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center">3</span>
-                </div>
-                <div class="flex items-center space-x-3 bg-white px-4 py-1.5 rounded-xl border border-gray-100 shadow-sm">
+                </a>
+
+                <a href="{{ url('/profile') }}" class="flex items-center space-x-3 bg-white px-4 py-1.5 rounded-xl border border-gray-100 shadow-sm hover:bg-gray-50">
                     <div class="text-right">
                         <p class="text-sm font-bold text-gray-800 leading-none">Dr. Devia Amanda</p>
                         <p class="text-[10px] text-gray-400 font-bold mt-1 uppercase">Kepala Bedah Umum</p>
                     </div>
                     <img src="https://ui-avatars.com/api/?name=Devia+Amanda&background=10b981&color=fff" class="w-9 h-9 rounded-full" alt="Profile">
                     <i class="fa-solid fa-chevron-down text-gray-400 text-xs"></i>
-                </div>
+                </a>
             </div>
         </div>
 
@@ -122,6 +131,43 @@
                 <h2 class="text-3xl font-black text-[#1b5e20] tracking-tight">Jadwal Operasi (Bedah)</h2>
                 <p class="text-sm font-semibold text-gray-500 mt-1">Kelola jadwal operasi bedah rumah sakit.</p>
             </div>
+
+            <script>
+                (function(){
+                    const input = document.getElementById('globalSearch');
+                    const resultsBox = document.getElementById('searchResults');
+                    let timer = null;
+
+                    function renderResults(items){
+                        if(!items || items.length === 0){ resultsBox.classList.add('hidden'); resultsBox.innerHTML=''; return; }
+                        resultsBox.classList.remove('hidden');
+                        resultsBox.innerHTML = items.map(it => `
+                            <a href="${it.link}" class="block px-4 py-3 hover:bg-gray-50 border-b last:border-b-0">
+                                <div class="text-sm font-bold text-gray-800">${it.title}</div>
+                                <div class="text-xs text-gray-500 mt-1">${it.meta || it.type}</div>
+                            </a>
+                        `).join('');
+                    }
+
+                    input.addEventListener('input', function(e){
+                        const q = this.value.trim();
+                        clearTimeout(timer);
+                        if (q.length < 2) { renderResults([]); return; }
+                        timer = setTimeout(()=>{
+                            fetch(`/quick-search?q=${encodeURIComponent(q)}`)
+                                .then(r=>r.json())
+                                .then(renderResults)
+                                .catch(()=>renderResults([]));
+                        }, 250);
+                    });
+
+                    document.addEventListener('click', function(ev){
+                        if (!ev.target.closest('#searchResults') && !ev.target.closest('#globalSearch')){
+                            resultsBox.classList.add('hidden');
+                        }
+                    });
+                })();
+            </script>
 
             <!-- Filter Bar -->
             <form id="filterForm" method="GET" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-50 flex flex-wrap gap-4 items-end">
