@@ -110,6 +110,16 @@ Route::get('/dashboard', function () {
     ));
 })->name('dashboard');
 
+// Notifikasi (klik ikon lonceng di dashboard)
+Route::get('/notifications', function () {
+    try {
+        $notifications = \Illuminate\Support\Facades\DB::table('notifications')->orderBy('created_at','desc')->limit(50)->get();
+    } catch (\Exception $e) {
+        $notifications = collect();
+    }
+    return view('notifications', compact('notifications'));
+})->name('notifications');
+
 // Rute Jadwal Operasi (Bedah)
 Route::get('/jadwal-operasi', function (Request $request) {
     $query = DB::table('surgery_schedules')

@@ -109,10 +109,10 @@
             </div>
             
             <div class="flex items-center space-x-6">
-                <button class="relative text-gray-400 hover:text-gray-600 transition-colors">
+                <a href="{{ url('/notifications') }}" class="relative text-gray-400 hover:text-gray-600 transition-colors">
                     <i class="fa-regular fa-bell text-xl"></i>
                     <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
-                </button>
+                </a>
                 <div class="h-8 w-px bg-gray-200"></div>
                 <div class="flex items-center space-x-3">
                     <div class="text-right">

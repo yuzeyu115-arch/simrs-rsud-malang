@@ -36,7 +36,7 @@
         }
     </style>
 </head>
-<body class="flex overflow-hidden h-screen">
+<body class="flex min-h-screen">
 
     <!-- Sidebar -->
     <aside class="w-64 bg-white border-r border-gray-100 flex flex-col flex-shrink-0 shadow-sm z-20">
