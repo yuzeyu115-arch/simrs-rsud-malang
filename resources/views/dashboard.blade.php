@@ -114,13 +114,13 @@
                     <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
                 </a>
                 <div class="h-8 w-px bg-gray-200"></div>
-                <div class="flex items-center space-x-3">
+                <a href="{{ url('/profile') }}" class="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-xl transition-colors">
                     <div class="text-right">
                         <p class="text-sm font-bold text-gray-800 leading-none">Dr. Andi Prakoso</p>
                         <p class="text-xs text-gray-500 mt-1">Kepala Bedah Umum</p>
                     </div>
                     <div class="w-10 h-10 rounded-full bg-primary-green flex items-center justify-center text-white font-bold shadow-sm">AP</div>
-                </div>
+                </a>
             </div>
         </div>
 

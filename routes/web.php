@@ -120,6 +120,20 @@ Route::get('/notifications', function () {
     return view('notifications', compact('notifications'));
 })->name('notifications');
 
+// Profil pengguna (tenaga medis) — diakses dari tombol profil di dashboard
+Route::get('/profile', function () {
+    try {
+        $user = \Illuminate\Support\Facades\Auth::user();
+        if (! $user) {
+            $user = \Illuminate\Support\Facades\DB::table('users')->where('id', 1)->first();
+        }
+    } catch (\Exception $e) {
+        $user = (object) ['name' => 'Pengguna', 'email' => null, 'role' => 'Tenaga Medis'];
+    }
+
+    return view('profile', compact('user'));
+})->name('profile');
+
 // Rute Jadwal Operasi (Bedah)
 Route::get('/jadwal-operasi', function (Request $request) {
     $query = DB::table('surgery_schedules')
