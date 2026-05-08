@@ -11,29 +11,29 @@ class HospitalDataSeeder extends Seeder
     public function run(): void
     {
         // 1. Seed Staff Tables
-        DB::table('kepala_instalasi_operasi')->insert([
+        DB::table('kepala_instalasi_operasi')->insertOrIgnore([
             ['nama' => 'Dr. Ahmad Spesialis OK', 'nip' => '198501012010011001', 'alamat' => 'Malang', 'no_telp' => '081234567890'],
         ]);
 
-        DB::table('dokter_bedah')->insert([
+        DB::table('dokter_bedah')->insertOrIgnore([
             ['nama' => 'Dr. Hendra, Sp.B', 'nip' => '197505052005011002', 'spesialisasi' => 'Bedah Umum', 'alamat' => 'Malang'],
             ['nama' => 'Dr. Devia Amanda, Sp.B', 'nip' => '198808082015012003', 'spesialisasi' => 'Bedah Digestif', 'alamat' => 'Malang'],
         ]);
 
-        DB::table('dokter_anestesi')->insert([
+        DB::table('dokter_anestesi')->insertOrIgnore([
             ['nama' => 'Dr. Maya, Sp.An', 'nip' => '198202022010012004', 'alamat' => 'Malang'],
         ]);
 
-        DB::table('perawat_sirkuler')->insert([
+        DB::table('perawat_sirkuler')->insertOrIgnore([
             ['nama' => 'Joko Sirkuler, S.Kep', 'nip' => '199003032018011005', 'alamat' => 'Malang'],
         ]);
 
-        DB::table('staff_farmasi')->insert([
+        DB::table('staff_farmasi')->insertOrIgnore([
             ['nama' => 'Apoteker Rian', 'nip' => '199204042019011006', 'alamat' => 'Malang'],
         ]);
 
         // 2. Seed Medicines
-        DB::table('medicines')->insert([
+        DB::table('medicines')->insertOrIgnore([
             [
                 'nama_obat' => 'Paracetamol 500mg',
                 'jenis_obat' => 'Analgesik',
@@ -64,7 +64,7 @@ class HospitalDataSeeder extends Seeder
         ]);
 
         // 3. Seed Medicine Packages (Farmasi & Obat)
-        DB::table('medicine_packages')->insert([
+        DB::table('medicine_packages')->insertOrIgnore([
             [
                 'nama_paket' => 'Paket Bedah Umum A',
                 'jenis_obat' => 'Campuran',
@@ -86,7 +86,7 @@ class HospitalDataSeeder extends Seeder
         ]);
 
         // 3b. Seed Gizi - Pemesanan Menu
-        DB::table('pemesanan_menu')->insert([
+        DB::table('pemesanan_menu')->insertOrIgnore([
             [
                 'ruang' => 'Ruang Melati 1',
                 'kelas' => 'VIP',
@@ -117,7 +117,7 @@ class HospitalDataSeeder extends Seeder
         ]);
 
         // 3c. Seed Gizi - Laporan Pemesanan
-        DB::table('laporan_pemesanan')->insert([
+        DB::table('laporan_pemesanan')->insertOrIgnore([
             [
                 'nama' => 'Anisa Putri',
                 'jam_pesan' => '06:00',
@@ -145,7 +145,7 @@ class HospitalDataSeeder extends Seeder
         ]);
 
         // 3d. Seed Gizi - Jadwal Makan
-        DB::table('jadwal_makan')->insert([
+        DB::table('jadwal_makan')->insertOrIgnore([
             [
                 'nama' => 'Anisa Putri',
                 'jam_pesan' => '06:00',
@@ -173,14 +173,14 @@ class HospitalDataSeeder extends Seeder
         ]);
 
         // 4. Seed Operating Rooms
-        DB::table('operating_rooms')->insert([
+        DB::table('operating_rooms')->insertOrIgnore([
             ['nama_ruang' => 'Bedah A', 'status' => 'Tersedia', 'lantai' => '2'],
             ['nama_ruang' => 'Bedah B', 'status' => 'Digunakan', 'lantai' => '2'],
             ['nama_ruang' => 'ICU', 'status' => 'Tersedia', 'lantai' => '1'],
         ]);
 
         // 4. Seed Inpatient Beds (Bed Manager)
-        DB::table('inpatient_beds')->insert([
+        DB::table('inpatient_beds')->insertOrIgnore([
             [
                 'gedung' => 'Gedung A (Tulip)',
                 'lantai' => 'Lantai 2',
@@ -214,7 +214,7 @@ class HospitalDataSeeder extends Seeder
         ]);
 
         // 5. Seed Surgery Schedules (Jadwal Operasi)
-        DB::table('surgery_schedules')->insert([
+        DB::table('surgery_schedules')->insertOrIgnore([
             [
                 'nama_pasien' => 'Anisa Putri',
                 'nomor_rm' => '00012345',
@@ -254,7 +254,7 @@ class HospitalDataSeeder extends Seeder
         ]);
 
         // 6. Seed Appointments (Janji Temu) - Based on UI design
-        DB::table('appointments')->insert([
+        DB::table('appointments')->insertOrIgnore([
             [
                 'nama_pasien' => 'Anisa Putri',
                 'nomor_rm' => '00012345',
@@ -330,7 +330,7 @@ class HospitalDataSeeder extends Seeder
         ]);
 
         // 6. Seed Fast Logistics
-        DB::table('fast_logistics')->insert([
+        DB::table('fast_logistics')->insertOrIgnore([
             [
                 'total_bius_tersedia' => 45,
                 'jumlah_cairan_infus' => 120,
@@ -341,7 +341,7 @@ class HospitalDataSeeder extends Seeder
         ]);
 
         // 7. Seed Notifications
-        DB::table('notifications')->insert([
+        DB::table('notifications')->insertOrIgnore([
             ['judul' => 'Stok Obat Menipis', 'pesan' => 'Stok Lidocaine tersisa 10 unit.', 'tipe' => 'Warning', 'created_at' => now()],
             ['judul' => 'Jadwal Operasi Baru', 'pesan' => 'Operasi Anisa Putri dijadwalkan besok.', 'tipe' => 'Info', 'created_at' => now()],
         ]);
