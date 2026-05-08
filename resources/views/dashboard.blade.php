@@ -281,8 +281,11 @@
     </main>
 
     <script>
-        const ctx = document.getElementById('mainChart').getContext('2d');
-        const mainChart = new Chart(ctx, {
+        (function(){
+            const canvas = document.getElementById('mainChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const mainChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
@@ -294,7 +297,7 @@
                         backgroundColor: (context) => {
                             const chart = context.chart;
                             const {ctx, chartArea} = chart;
-                            if (!chartArea) return null;
+                            if (!chartArea) return 'rgba(16,185,129,0.08)';
                             const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
                             gradient.addColorStop(0, 'rgba(16, 185, 129, 0)');
                             gradient.addColorStop(1, 'rgba(16, 185, 129, 0.2)');
@@ -340,7 +343,8 @@
                     }
                 }
             }
-        });
+            });
+        })();
     </script>
 </body>
 </html>
