@@ -764,3 +764,24 @@ Route::get('/db-check', function () {
 // Route::get('/farmasi', function () {
 //     return view('farmasi');
 // });
+
+// ===== DEV HELPERS =====
+// Quick role switcher for local testing (logs in as example users created by UserSeeder)
+Route::get('/dev/switch-role', function () {
+    $roles = [
+        'pj_admin','dpjp','kepala_instalasi_operasi','perawat_anestesi','perawat_bedah','perawat_instrumentor','perawat_sirkuler','dokter_bedah','dokter_anestesi','perawat_recovery','farmasi','gizi','admin'
+    ];
+    return view('dev.switch-role', compact('roles'));
+});
+
+Route::get('/dev/login-as/{username}', function ($username) {
+    try {
+        $user = \App\Models\User::where('username', $username)->first();
+        if (! $user) return redirect('/dev/switch-role')->with('error', 'User not found');
+        \Illuminate\Support\Facades\Auth::login($user);
+        request()->session()->regenerate();
+        return redirect('/dashboard')->with('success', 'Logged in as '.$user->username);
+    } catch (\Exception $e) {
+        return redirect('/dev/switch-role')->with('error', 'Login failed');
+    }
+});
