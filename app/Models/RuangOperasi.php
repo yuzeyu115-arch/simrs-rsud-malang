@@ -6,36 +6,34 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Appointment extends Model
+class RuangOperasi extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $table = 'appointments';
+    protected $table = 'ruang_operasi';
     protected $keyType = 'string';
     public $incrementing = false;
 
     protected $fillable = [
-        'pasien_id',
-        'dokter_id',
-        'keluhan',
-        'waktu_janji',
+        'nama_ruangan',
         'status',
+        'kapasitas_bed',
+        'catatan',
     ];
 
     protected $casts = [
-        'waktu_janji' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
     // Relationships
-    public function pasien()
+    public function beds()
     {
-        return $this->belongsTo(Pasien::class);
+        return $this->hasMany(Bed::class);
     }
 
-    public function dokter()
+    public function jadwalOperasi()
     {
-        return $this->belongsTo(User::class, 'dokter_id');
+        return $this->hasMany(JadwalOperasi::class);
     }
 }

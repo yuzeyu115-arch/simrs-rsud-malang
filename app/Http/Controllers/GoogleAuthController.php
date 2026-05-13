@@ -37,6 +37,8 @@ class GoogleAuthController extends Controller
                 // or log in with a temporary session if possible.
                 // For now, we'll just try to continue to the dashboard.
             }
+            // Add a small delay to allow the "Connecting..." screen to be seen
+            sleep(1);
             return redirect()->intended('dashboard');
         }
 

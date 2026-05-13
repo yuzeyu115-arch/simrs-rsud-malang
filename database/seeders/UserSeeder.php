@@ -13,92 +13,99 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = [
-            [
-                'name' => 'PJ Admin',
-                'username' => 'pj_admin',
-                'password' => Hash::make('password'),
-                'role' => 'pj_admin',
-            ],
-            [
-                'name' => 'Dr. DPJP',
-                'username' => 'dpjp',
-                'password' => Hash::make('password'),
-                'role' => 'dpjp',
-            ],
-            [
-                'name' => 'Dr. Ahmad Spesialis OK',
-                'username' => 'kepala_ok',
-                'password' => Hash::make('password'),
-                'role' => 'kepala_instalasi_operasi',
-            ],
-            [
-                'name' => 'Budi Anestesi, S.Kep',
-                'username' => 'asisten_anestesi_1',
-                'password' => Hash::make('password'),
-                'role' => 'perawat_anestesi',
-            ],
-            [
-                'name' => 'Siti Bedah, S.Kep',
-                'username' => 'asisten_bedah_1',
-                'password' => Hash::make('password'),
-                'role' => 'perawat_bedah',
-            ],
-            [
-                'name' => 'Rini Instrument, S.Kep',
-                'username' => 'instrumentor_1',
-                'password' => Hash::make('password'),
-                'role' => 'perawat_instrumentor',
-            ],
-            [
-                'name' => 'Joko Sirkuler, S.Kep',
-                'username' => 'sirkuler_1',
-                'password' => Hash::make('password'),
-                'role' => 'perawat_sirkuler',
-            ],
-            [
-                'name' => 'Dr. Hendra, Sp.B',
-                'username' => 'dokter_bedah_1',
-                'password' => Hash::make('password'),
-                'role' => 'dokter_bedah',
-            ],
-            [
-                'name' => 'Dr. Maya, Sp.An',
-                'username' => 'dokter_anestesi_1',
-                'password' => Hash::make('password'),
-                'role' => 'dokter_anestesi',
-            ],
-            [
-                'name' => 'Lani Recovery, S.Kep',
-                'username' => 'perawat_rr_1',
-                'password' => Hash::make('password'),
-                'role' => 'perawat_recovery',
-            ],
-            [
-                'name' => 'Apoteker Rian',
-                'username' => 'farmasi_1',
-                'password' => Hash::make('password'),
-                'role' => 'farmasi',
-            ],
-            [
-                'name' => 'Tim Gizi Sehat',
-                'username' => 'gizi_1',
-                'password' => Hash::make('password'),
-                'role' => 'gizi',
-            ],
-            [
-                'name' => 'Admin SIMRS',
-                'username' => 'admin',
-                'password' => Hash::make('password'),
-                'role' => 'admin',
-            ],
-        ];
+        // Admin
+        User::create([
+            'name' => 'Administrator',
+            'email' => 'admin@simrs.local',
+            'password' => Hash::make('password123'),
+            'role' => 'admin',
+        ]);
 
-        foreach ($users as $user) {
-            User::updateOrCreate(
-                ['username' => $user['username']],
-                $user
-            );
-        }
+        // Dokter
+        User::create([
+            'name' => 'Dr. Hendra',
+            'email' => 'dokter1@simrs.local',
+            'password' => Hash::make('password123'),
+            'role' => 'dokter',
+        ]);
+
+        User::create([
+            'name' => 'Dr. Devia',
+            'email' => 'dokter2@simrs.local',
+            'password' => Hash::make('password123'),
+            'role' => 'dokter',
+        ]);
+
+        // Ka Bedah
+        User::create([
+            'name' => 'Kepala Bedah',
+            'email' => 'kabedah@simrs.local',
+            'password' => Hash::make('password123'),
+            'role' => 'ka_bedah',
+        ]);
+
+        // Perawat
+        User::create([
+            'name' => 'Perawat 1',
+            'email' => 'perawat1@simrs.local',
+            'password' => Hash::make('password123'),
+            'role' => 'perawat',
+        ]);
+
+        User::create([
+            'name' => 'Perawat 2',
+            'email' => 'perawat2@simrs.local',
+            'password' => Hash::make('password123'),
+            'role' => 'perawat',
+        ]);
+
+        // Anestesi
+        User::create([
+            'name' => 'Dokter Anestesi',
+            'email' => 'anestesi@simrs.local',
+            'password' => Hash::make('password123'),
+            'role' => 'anestesi',
+        ]);
+
+        // Ahli Gizi
+        User::create([
+            'name' => 'Ahli Gizi',
+            'email' => 'gizi@simrs.local',
+            'password' => Hash::make('password123'),
+            'role' => 'ahli_gizi',
+        ]);
+
+        // Farmasi
+        User::create([
+            'name' => 'Staff Farmasi',
+            'email' => 'farmasi@simrs.local',
+            'password' => Hash::make('password123'),
+            'role' => 'farmasi',
+        ]);
+
+        // Rekam Medis
+        User::create([
+            'name' => 'Rekam Medis',
+            'email' => 'rekammedis@simrs.local',
+            'password' => Hash::make('password123'),
+            'role' => 'rekam_medis',
+        ]);
+
+        // Pasien
+        User::create([
+            'name' => 'Anisa Putri',
+            'email' => 'pasien1@simrs.local',
+            'no_hp' => '081234567890',
+            'password' => Hash::make('password123'),
+            'role' => 'pasien',
+        ]);
+
+        User::create([
+            'name' => 'Budi Santoso',
+            'email' => 'pasien2@simrs.local',
+            'no_hp' => '081234567891',
+            'password' => Hash::make('password123'),
+            'role' => 'pasien',
+        ]);
     }
 }

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Handled in base migration
+        // Handled in 2026 migration
     }
 
     /**
@@ -19,6 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Handled in base migration
+        // Handled in 2026 migration
     }
 };

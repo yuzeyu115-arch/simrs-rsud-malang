@@ -10,7 +10,7 @@ use App\Http\Controllers\GoogleAuthController;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Di sini adalah tempat Anda mendaftarkan rute web untuk aplikasi SIMRS.
+| Di sini adalah tempat Anda mendaftarkan rute web untuk aplikasi SimpleOK.
 |
 */
 

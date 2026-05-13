@@ -1,7 +1,7 @@
-# SIMRS Hospital Management System - Completion Summary
+# SimpleOK Hospital Management System - Completion Summary
 
 ## Project Overview
-**SIMRS (Sistem Informasi Manajemen Rumah Sakit)** - Hospital Management System for RSUD Kota Malang has been successfully completed with comprehensive features for managing surgical operations, appointments, bed management, pharmacy, nutrition, and logistics.
+**SimpleOK (Sistem Informasi Manajemen Rumah Sakit)** - Hospital Management System for RSUD Kota Malang has been successfully completed with comprehensive features for managing surgical operations, appointments, bed management, pharmacy, nutrition, and logistics.
 
 ---
 
@@ -340,7 +340,7 @@ php artisan serve
 
 ## 🎉 Conclusion
 
-**SIMRS Hospital Management System** is now **fully operational** and ready for deployment. All 10 major modules are working perfectly with complete CRUD functionality, beautiful UI, and proper database integration. The system successfully manages surgical operations, appointments, pharmacy inventory, nutrition planning, bed management, and logistics tracking for RSUD Kota Malang.
+**SimpleOK Hospital Management System** is now **fully operational** and ready for deployment. All 10 major modules are working perfectly with complete CRUD functionality, beautiful UI, and proper database integration. The system successfully manages surgical operations, appointments, pharmacy inventory, nutrition planning, bed management, and logistics tracking for RSUD Kota Malang.
 
 **Status**: ✅ **COMPLETE AND TESTED**
 

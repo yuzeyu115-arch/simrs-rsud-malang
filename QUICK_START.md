@@ -1,4 +1,4 @@
-# SIMRS Quick Start Guide
+# SimpleOK Quick Start Guide
 
 ## 🚀 Getting Started
 
@@ -12,7 +12,7 @@
 
 ```bash
 # 1. Navigate to project directory
-cd "c:\laragon\SIMRO-SIMRS KOTA MALANG\simrs-rsud-malang"
+cd "c:\laragon\SimpleOK RSUD\simrs-rsud-malang"
 
 # 2. Install PHP dependencies
 composer install
@@ -196,7 +196,7 @@ php artisan serve --host=127.0.0.1 --port=8000
 
 ### Database Name
 ```
-simro_db
+simpleok_db
 ```
 
 ### Main Tables
@@ -216,12 +216,12 @@ simro_db
 ### Connect to Database
 ```bash
 # Using command line
-mysql -h 127.0.0.1 -u root -p simro_db
+mysql -h 127.0.0.1 -u root -p simpleok_db
 
 # Database credentials (from .env)
 Host: 127.0.0.1
 Port: 3306
-Database: simro_db
+Database: simpleok_db
 Username: root
 Password: (empty)
 ```
@@ -230,7 +230,7 @@ Password: (empty)
 
 ## 🛠️ Troubleshooting
 
-### Issue: Database Error (Unknown database 'simro_db')
+### Issue: Database Error (Unknown database 'simpleok_db')
 **Solution**:
 ```bash
 php artisan migrate:fresh --seed
@@ -413,7 +413,7 @@ tail -f storage/logs/laravel.log
 
 - **Auto-login** is enabled in development for convenience
 - **Seeded data** includes 30+ sample records across all modules
-- **Database backup**: Before making changes, backup `simro_db`
+- **Database backup**: Before making changes, backup `simpleok_db`
 - **Git integration**: All changes tracked in git repository
 - **Last tested**: May 7, 2026 13:22 UTC
 

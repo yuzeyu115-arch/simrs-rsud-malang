@@ -1,5 +1,5 @@
 -- =========================================================
--- DATABASE SCHEMA SIMRO (SIMRS KOTA MALANG)
+-- DATABASE SCHEMA SimpleOK (SimpleOK KOTA MALANG)
 -- =========================================================
 
 -- 1. TABEL PENGGUNA (AUTHENTIKASI & AUTHORISASI)

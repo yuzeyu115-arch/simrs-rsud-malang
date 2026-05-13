@@ -3,7 +3,7 @@
         <div class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-white">
             <i class="fa-solid fa-hospital"></i>
         </div>
-        <span class="text-xl font-bold text-gray-800">SIMRS</span>
+        <span class="text-xl font-bold text-gray-800">SimpleOK</span>
     </div>
 
     <nav class="flex-1 px-4 space-y-2 overflow-y-auto">

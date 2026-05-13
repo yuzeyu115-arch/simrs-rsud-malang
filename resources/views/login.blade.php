@@ -104,6 +104,7 @@
                 <!-- Google Login -->
                 <a 
                     href="{{ route('auth.google') }}" 
+                    onclick="handleGoogleLogin(event)"
                     class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-600 font-bold py-4 px-4 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md"
                 >
                     <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5" alt="Google">
@@ -153,6 +154,24 @@
             <div class="absolute top-0 right-0 w-2 h-full bg-green-600/50"></div>
         </div>
     </div>
-    <!-- Removed auto-login simulation -->
+    <!-- Google Login Loading Overlay -->
+    <div id="google-loading" class="fixed inset-0 bg-white/80 backdrop-blur-md z-[100] flex flex-col items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="relative w-24 h-24 mb-6">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-full h-full animate-pulse" alt="Google">
+            <div class="absolute inset-0 border-4 border-green-500/30 border-t-green-600 rounded-full animate-spin"></div>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-800 tracking-tight">Menghubungkan ke Google...</h3>
+        <p class="text-gray-500 mt-2 font-medium">Mohon tunggu sebentar</p>
+    </div>
+
+    <script>
+        function handleGoogleLogin(e) {
+            const overlay = document.getElementById('google-loading');
+            overlay.classList.remove('hidden');
+            setTimeout(() => {
+                overlay.classList.add('opacity-100');
+            }, 10);
+        }
+    </script>
 </body>
 </html>

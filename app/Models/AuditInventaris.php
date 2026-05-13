@@ -6,36 +6,36 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Appointment extends Model
+class AuditInventaris extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $table = 'appointments';
+    protected $table = 'audit_inventaris';
     protected $keyType = 'string';
     public $incrementing = false;
 
     protected $fillable = [
-        'pasien_id',
-        'dokter_id',
-        'keluhan',
-        'waktu_janji',
-        'status',
+        'inventaris_id',
+        'jenis_aktivitas',
+        'jumlah',
+        'keterangan',
+        'diaudit_oleh',
     ];
 
     protected $casts = [
-        'waktu_janji' => 'datetime',
+        'waktu_audit' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
     // Relationships
-    public function pasien()
+    public function inventaris()
     {
-        return $this->belongsTo(Pasien::class);
+        return $this->belongsTo(Inventaris::class);
     }
 
-    public function dokter()
+    public function diauditOleh()
     {
-        return $this->belongsTo(User::class, 'dokter_id');
+        return $this->belongsTo(User::class, 'diaudit_oleh');
     }
 }

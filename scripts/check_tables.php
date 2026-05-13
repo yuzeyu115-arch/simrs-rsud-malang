@@ -7,7 +7,7 @@ $kernel->bootstrap();
 
 $res = $app['db']->select(
     "SELECT table_name FROM information_schema.tables WHERE table_schema = ? AND table_name = ?",
-    ['simro_db', 'surgery_schedules']
+    ['simpleok_db', 'surgery_schedules']
 );
 
 echo json_encode($res, JSON_PRETTY_PRINT);
