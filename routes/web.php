@@ -303,11 +303,6 @@ Route::delete('/jadwal-operasi/{id}', function ($id) {
     return redirect()->route('jadwal-operasi')->with('success', 'Jadwal operasi berhasil dihapus.');
 })->name('jadwal-operasi.destroy');
 
-// Rute Bed Manager
-Route::get('/bed-manager', function () {
-    return view('bed-manager');
-})->name('bed-manager');
-
 // Rute Farmasi & Obat
 Route::get('/farmasi', function () {
     $packages = DB::table('medicine_packages')->orderBy('nama_paket')->get();
@@ -597,10 +592,14 @@ Route::delete('/gizi/jadwal-makan/{id}', function ($id) {
 })->name('jadwal-makan.destroy');
 
 // ===== MANAJEMEN BED / INPATIENT BEDS =====
-Route::get('/bed-manager-list', function () {
+Route::get('/bed-manager', function () {
     $beds = DB::table('inpatient_beds')->orderBy('created_at', 'desc')->get();
     return view('bed-manager-list', compact('beds'));
 })->name('bed-manager-list');
+
+Route::get('/bed-manager-list', function () {
+    return redirect()->route('bed-manager-list');
+});
 
 Route::post('/bed-manager-add', function (Request $request) {
     $validated = $request->validate([
@@ -649,12 +648,12 @@ Route::delete('/bed-manager/{id}', function ($id) {
 })->name('bed-manager.destroy');
 
 // ===== RAPAT KOORDINASI / COORDINATION MEETINGS =====
-Route::get('/bedah/rapat-koordinasi', function () {
+Route::get('/rapat-koordinasi', function () {
     $meetings = DB::table('coordination_meetings')->orderBy('tanggal_rapat', 'desc')->get();
     return view('bedah.rapat-koordinasi', compact('meetings'));
 })->name('rapat-koordinasi');
 
-Route::post('/bedah/rapat-koordinasi', function (Request $request) {
+Route::post('/rapat-koordinasi', function (Request $request) {
     $validated = $request->validate([
         'judul_rapat' => 'required|string|max:255',
         'tanggal_rapat' => 'required|date',
@@ -671,14 +670,14 @@ Route::post('/bedah/rapat-koordinasi', function (Request $request) {
     return redirect()->route('rapat-koordinasi')->with('success', 'Rapat koordinasi berhasil ditambahkan.');
 })->name('rapat-koordinasi.store');
 
-Route::get('/bedah/rapat-koordinasi/{id}/edit', function ($id) {
+Route::get('/rapat-koordinasi/{id}/edit', function ($id) {
     $meetingItem = DB::table('coordination_meetings')->where('id', $id)->first();
     $meetings = DB::table('coordination_meetings')->orderBy('tanggal_rapat', 'desc')->get();
     if (!$meetingItem) abort(404);
     return view('bedah.rapat-koordinasi', compact('meetingItem', 'meetings'));
 })->name('rapat-koordinasi.edit');
 
-Route::put('/bedah/rapat-koordinasi/{id}', function (Request $request, $id) {
+Route::put('/rapat-koordinasi/{id}', function (Request $request, $id) {
     $validated = $request->validate([
         'judul_rapat' => 'required|string|max:255',
         'tanggal_rapat' => 'required|date',
@@ -694,7 +693,7 @@ Route::put('/bedah/rapat-koordinasi/{id}', function (Request $request, $id) {
     return redirect()->route('rapat-koordinasi')->with('success', 'Rapat koordinasi berhasil diperbarui.');
 })->name('rapat-koordinasi.update');
 
-Route::delete('/bedah/rapat-koordinasi/{id}', function ($id) {
+Route::delete('/rapat-koordinasi/{id}', function ($id) {
     DB::table('coordination_meetings')->where('id', $id)->delete();
     return redirect()->route('rapat-koordinasi')->with('success', 'Rapat koordinasi berhasil dihapus.');
 })->name('rapat-koordinasi.destroy');
