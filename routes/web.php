@@ -608,7 +608,12 @@ Route::delete('/admin/pengguna/{id}', function ($id) {
 // Form untuk membuat pemesanan baru (halaman terpisah)
 Route::get('/gizi/pemesanan-menu/create', function () {
     $rooms = DB::table('operating_rooms')->orderBy('nama_ruang')->get();
-    return view('gizi.create-pemesanan-menu', compact('rooms'));
+    try {
+        $menusList = DB::table('menus')->orderBy('nama_menu')->get();
+    } catch (\Exception $e) {
+        $menusList = collect();
+    }
+    return view('gizi.create-pemesanan-menu', compact('rooms', 'menusList'));
 })->name('pemesanan-menu.create');
 
 Route::get('/gizi/pemesanan-menu', function () {
@@ -701,7 +706,24 @@ Route::delete('/gizi/pemesanan-menu/{id}', function ($id) {
 // ===== JADWAL MAKAN =====
 Route::get('/gizi/jadwal-makan', function () {
     $jadwal = DB::table('jadwal_makan')->orderBy('created_at', 'desc')->get();
-    return view('gizi.jadwal-makan', compact('jadwal'));
+    try {
+        $todayOrders = DB::table('pemesanan_menu')->whereDate('tanggal', now()->toDateString())->count();
+        $todayReports = DB::table('laporan_pemesanan')->whereDate('created_at', now()->toDateString())->count();
+        $todaySchedules = DB::table('jadwal_makan')->whereDate('created_at', now()->toDateString())->count();
+    } catch (\Exception $e) {
+        $todayOrders = 0;
+        $todayReports = 0;
+        $todaySchedules = 0;
+    }
+    $stats = [
+        'today_orders' => $todayOrders,
+        'delta_orders' => 0,
+        'today_reports' => $todayReports,
+        'delta_reports' => 0,
+        'today_schedules' => $todaySchedules,
+        'delta_schedules' => 0,
+    ];
+    return view('gizi.jadwal-makan', compact('jadwal', 'stats'));
 })->name('jadwal-makan');
 
 Route::post('/gizi/jadwal-makan', function (Request $request) {
