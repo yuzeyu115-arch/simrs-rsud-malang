@@ -451,7 +451,28 @@ Route::delete('/farmasi/obat/{id}', function ($id) {
 
 // Rute Gizi
 Route::get('/gizi', function () {
-    return view('gizi');
+    try {
+        $todayOrders = DB::table('pemesanan_menu')->whereDate('tanggal', now()->toDateString())->count();
+        $todayReports = DB::table('laporan_pemesanan')->whereDate('created_at', now()->toDateString())->count();
+        $todaySchedules = DB::table('jadwal_makan')->whereDate('created_at', now()->toDateString())->count();
+        $latestOrders = DB::table('pemesanan_menu')->orderBy('tanggal', 'desc')->limit(5)->get();
+    } catch (\Exception $e) {
+        $todayOrders = 0;
+        $todayReports = 0;
+        $todaySchedules = 0;
+        $latestOrders = collect();
+    }
+
+    $stats = [
+        'today_orders' => $todayOrders,
+        'delta_orders' => 0,
+        'today_reports' => $todayReports,
+        'delta_reports' => 0,
+        'today_schedules' => $todaySchedules,
+        'delta_schedules' => 0,
+    ];
+
+    return view('gizi', compact('stats', 'latestOrders'));
 })->name('gizi');
 
 // Rute Janji Temu
