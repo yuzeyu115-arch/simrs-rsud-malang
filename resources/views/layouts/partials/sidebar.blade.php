@@ -30,6 +30,10 @@
             <i class="fa-solid fa-utensils"></i>
             <span>Gizi</span>
         </a>
+        <a href="{{ url('/gizi/figma') }}" class="flex items-center gap-3 px-4 py-2 ml-6 rounded-xl transition {{ request()->is('gizi/figma*') ? 'bg-emerald-100 text-emerald-800 font-semibold' : 'text-gray-500 hover:bg-gray-50' }}">
+            <i class="fa-solid fa-file-lines"></i>
+            <span class="text-sm">Design Preview</span>
+        </a>
         <a href="{{ url('/janji-temu') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl transition {{ request()->is('janji-temu*') ? 'bg-emerald-50 text-emerald-700 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
             <i class="fa-solid fa-calendar-plus"></i>
             <span>Janji Temu</span>

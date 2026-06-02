@@ -475,6 +475,32 @@ Route::get('/gizi', function () {
     return view('gizi', compact('stats', 'latestOrders'));
 })->name('gizi');
 
+// Preview halaman desain Figma (non-destruktif)
+Route::get('/gizi/figma', function () {
+    try {
+        $todayOrders = DB::table('pemesanan_menu')->whereDate('tanggal', now()->toDateString())->count();
+        $todayReports = DB::table('laporan_pemesanan')->whereDate('created_at', now()->toDateString())->count();
+        $todaySchedules = DB::table('jadwal_makan')->whereDate('created_at', now()->toDateString())->count();
+        $latestOrders = DB::table('pemesanan_menu')->orderBy('tanggal', 'desc')->limit(8)->get();
+    } catch (\Exception $e) {
+        $todayOrders = 0;
+        $todayReports = 0;
+        $todaySchedules = 0;
+        $latestOrders = collect();
+    }
+
+    $stats = [
+        'today_orders' => $todayOrders,
+        'delta_orders' => 0,
+        'today_reports' => $todayReports,
+        'delta_reports' => 0,
+        'today_schedules' => $todaySchedules,
+        'delta_schedules' => 0,
+    ];
+
+    return view('gizi.figma-page', compact('stats', 'latestOrders'));
+})->name('gizi.figma');
+
 // Rute Janji Temu
 Route::get('/janji-temu', function () {
     try {
