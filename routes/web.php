@@ -129,7 +129,7 @@ Route::get('/dashboard', function () {
         $user = null;
     }
 
-    $userRole = $user->role ?? ($user->getRoleAttribute() ?? 'guest');
+    $userRole = $user?->role ?? 'guest';
     $isPJAdmin = in_array($userRole, ['pj_admin', 'admin', 'pj']);
     $isDPJP = in_array($userRole, ['dpjp', 'dokter', 'dokter_bedah']);
 
@@ -172,54 +172,66 @@ Route::get('/profile', function () {
 
 // Rute Jadwal Operasi (Bedah)
 Route::get('/jadwal-operasi', function (Request $request) {
-    $query = DB::table('surgery_schedules')
-        ->leftJoin('dokter_bedah', 'surgery_schedules.dokter_bedah_id', '=', 'dokter_bedah.id')
-        ->leftJoin('dokter_anestesi', 'surgery_schedules.dokter_anestesi_id', '=', 'dokter_anestesi.id')
-        ->leftJoin('operating_rooms', 'surgery_schedules.ruang_id', '=', 'operating_rooms.id')
-        ->select(
-            'surgery_schedules.*',
-            'dokter_bedah.nama as dokter_bedah',
-            'dokter_anestesi.nama as dokter_anestesi',
-            'operating_rooms.nama_ruang as nama_ruang'
-        );
+    try {
+        $query = DB::table('surgery_schedules')
+            ->leftJoin('dokter_bedah', 'surgery_schedules.dokter_bedah_id', '=', 'dokter_bedah.id')
+            ->leftJoin('dokter_anestesi', 'surgery_schedules.dokter_anestesi_id', '=', 'dokter_anestesi.id')
+            ->leftJoin('operating_rooms', 'surgery_schedules.ruang_id', '=', 'operating_rooms.id')
+            ->select(
+                'surgery_schedules.*',
+                'dokter_bedah.nama as dokter_bedah',
+                'dokter_anestesi.nama as dokter_anestesi',
+                'operating_rooms.nama_ruang as nama_ruang'
+            );
 
-    // Filter by date
-    if ($request->tanggal) {
-        $query->whereDate('surgery_schedules.tanggal_operasi', $request->tanggal);
+        // Filter by date
+        if ($request->tanggal) {
+            $query->whereDate('surgery_schedules.tanggal_operasi', $request->tanggal);
+        }
+
+        // Filter by room
+        if ($request->ruang_id) {
+            $query->where('surgery_schedules.ruang_id', $request->ruang_id);
+        }
+
+        // Filter by status
+        if ($request->status) {
+            $query->where('surgery_schedules.status', $request->status);
+        }
+
+        // Search by patient name or doctor
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('surgery_schedules.nama_pasien', 'like', '%'.$request->search.'%')
+                  ->orWhere('dokter_bedah.nama', 'like', '%'.$request->search.'%')
+                  ->orWhere('dokter_anestesi.nama', 'like', '%'.$request->search.'%');
+            });
+        }
+
+        $schedules = $query->orderBy('tanggal_operasi', 'desc')
+            ->orderBy('jam_mulai', 'asc')
+            ->get();
+
+        $doctors = DB::table('dokter_bedah')->orderBy('nama')->get();
+        $anesthesias = DB::table('dokter_anestesi')->orderBy('nama')->get();
+        $rooms = DB::table('operating_rooms')->orderBy('nama_ruang')->get();
+
+        $totalToday = DB::table('surgery_schedules')->whereDate('tanggal_operasi', now()->toDateString())->count();
+        $selesai = DB::table('surgery_schedules')->where('status', 'Selesai')->count();
+        $berlangsung = DB::table('surgery_schedules')->where('status', 'Berjalan')->count();
+        $dibatalkan = DB::table('surgery_schedules')->where('status', 'Dibatalkan')->count();
+        $belum = DB::table('surgery_schedules')->where('status', 'Terjadwal')->count();
+    } catch (\Exception $e) {
+        $schedules = collect();
+        $doctors = collect();
+        $anesthesias = collect();
+        $rooms = collect();
+        $totalToday = 0;
+        $selesai = 0;
+        $berlangsung = 0;
+        $dibatalkan = 0;
+        $belum = 0;
     }
-
-    // Filter by room
-    if ($request->ruang_id) {
-        $query->where('surgery_schedules.ruang_id', $request->ruang_id);
-    }
-
-    // Filter by status
-    if ($request->status) {
-        $query->where('surgery_schedules.status', $request->status);
-    }
-
-    // Search by patient name or doctor
-    if ($request->search) {
-        $query->where(function($q) use ($request) {
-            $q->where('surgery_schedules.nama_pasien', 'like', '%'.$request->search.'%')
-              ->orWhere('dokter_bedah.nama', 'like', '%'.$request->search.'%')
-              ->orWhere('dokter_anestesi.nama', 'like', '%'.$request->search.'%');
-        });
-    }
-
-    $schedules = $query->orderBy('tanggal_operasi', 'desc')
-        ->orderBy('jam_mulai', 'asc')
-        ->get();
-
-    $doctors = DB::table('dokter_bedah')->orderBy('nama')->get();
-    $anesthesias = DB::table('dokter_anestesi')->orderBy('nama')->get();
-    $rooms = DB::table('operating_rooms')->orderBy('nama_ruang')->get();
-
-    $totalToday = DB::table('surgery_schedules')->whereDate('tanggal_operasi', now()->toDateString())->count();
-    $selesai = DB::table('surgery_schedules')->where('status', 'Selesai')->count();
-    $berlangsung = DB::table('surgery_schedules')->where('status', 'Berjalan')->count();
-    $dibatalkan = DB::table('surgery_schedules')->where('status', 'Dibatalkan')->count();
-    $belum = DB::table('surgery_schedules')->where('status', 'Terjadwal')->count();
 
     return view('jadwal-operasi', compact('schedules', 'doctors', 'anesthesias', 'rooms', 'totalToday', 'selesai', 'berlangsung', 'dibatalkan', 'belum'));
 })->name('jadwal-operasi');
@@ -310,8 +322,14 @@ Route::get('/bed-manager', function () {
 
 // Rute Farmasi & Obat
 Route::get('/farmasi', function () {
-    $packages = DB::table('medicine_packages')->orderBy('nama_paket')->get();
-    return view('farmasi', compact('packages'));
+    try {
+        $packages = DB::table('medicine_packages')->orderBy('nama_paket')->get();
+        $medicines = DB::table('medicines')->orderBy('nama_obat')->get();
+    } catch (\Exception $e) {
+        $packages = collect();
+        $medicines = collect();
+    }
+    return view('farmasi', compact('packages', 'medicines'));
 })->name('farmasi');
 
 Route::post('/farmasi', function (Request $request) {
@@ -333,14 +351,20 @@ Route::post('/farmasi', function (Request $request) {
 })->name('farmasi.store');
 
 Route::get('/farmasi/{id}/edit', function ($id) {
-    $packages = DB::table('medicine_packages')->orderBy('nama_paket')->get();
+    try {
+        $packages = DB::table('medicine_packages')->orderBy('nama_paket')->get();
+        $medicines = DB::table('medicines')->orderBy('nama_obat')->get();
+    } catch (\Exception $e) {
+        $packages = collect();
+        $medicines = collect();
+    }
     $editingPackage = DB::table('medicine_packages')->where('id', $id)->first();
 
     if (!$editingPackage) {
         abort(404);
     }
 
-    return view('farmasi', compact('packages', 'editingPackage'));
+    return view('farmasi', compact('packages', 'medicines', 'editingPackage'));
 })->name('farmasi.edit');
 
 Route::put('/farmasi/{id}', function (Request $request, $id) {
@@ -365,6 +389,66 @@ Route::delete('/farmasi/{id}', function ($id) {
     return redirect()->route('farmasi')->with('success', 'Paket obat berhasil dihapus.');
 })->name('farmasi.destroy');
 
+// Rute CRUD Obat Individu
+Route::post('/farmasi/obat', function (Request $request) {
+    $validated = $request->validate([
+        'nama_obat' => 'required|string|max:255',
+        'jenis_obat' => 'required|string|max:255',
+        'stok_obat' => 'required|integer|min:0',
+        'kandungan_obat' => 'nullable|string',
+        'tanggal_kadaluwarsa' => 'required|date',
+        'harga_obat' => 'required|numeric|min:0',
+        'status' => 'required|string|in:Tersedia,Menipis,Habis',
+    ]);
+
+    $validated['created_at'] = now();
+    $validated['updated_at'] = now();
+
+    DB::table('medicines')->insert($validated);
+
+    return redirect()->route('farmasi')->with('success', 'Data obat berhasil ditambahkan.');
+})->name('farmasi.obat.store');
+
+Route::get('/farmasi/obat/{id}/edit', function ($id) {
+    try {
+        $packages = DB::table('medicine_packages')->orderBy('nama_paket')->get();
+        $medicines = DB::table('medicines')->orderBy('nama_obat')->get();
+    } catch (\Exception $e) {
+        $packages = collect();
+        $medicines = collect();
+    }
+    $editingMedicine = DB::table('medicines')->where('id_obat', $id)->first();
+
+    if (!$editingMedicine) {
+        abort(404);
+    }
+
+    return view('farmasi', compact('packages', 'medicines', 'editingMedicine'));
+})->name('farmasi.obat.edit');
+
+Route::put('/farmasi/obat/{id}', function (Request $request, $id) {
+    $validated = $request->validate([
+        'nama_obat' => 'required|string|max:255',
+        'jenis_obat' => 'required|string|max:255',
+        'stok_obat' => 'required|integer|min:0',
+        'kandungan_obat' => 'nullable|string',
+        'tanggal_kadaluwarsa' => 'required|date',
+        'harga_obat' => 'required|numeric|min:0',
+        'status' => 'required|string|in:Tersedia,Menipis,Habis',
+    ]);
+
+    $validated['updated_at'] = now();
+
+    DB::table('medicines')->where('id_obat', $id)->update($validated);
+
+    return redirect()->route('farmasi')->with('success', 'Data obat berhasil diperbarui.');
+})->name('farmasi.obat.update');
+
+Route::delete('/farmasi/obat/{id}', function ($id) {
+    DB::table('medicines')->where('id_obat', $id)->delete();
+    return redirect()->route('farmasi')->with('success', 'Data obat berhasil dihapus.');
+})->name('farmasi.obat.destroy');
+
 // Rute Gizi
 Route::get('/gizi', function () {
     return view('gizi');
@@ -372,8 +456,13 @@ Route::get('/gizi', function () {
 
 // Rute Janji Temu
 Route::get('/janji-temu', function () {
-    $doctors = DB::table('dokter_bedah')->orderBy('nama')->get();
-    $rooms = DB::table('operating_rooms')->orderBy('nama_ruang')->get();
+    try {
+        $doctors = DB::table('dokter_bedah')->orderBy('nama')->get();
+        $rooms = DB::table('operating_rooms')->orderBy('nama_ruang')->get();
+    } catch (\Exception $e) {
+        $doctors = collect();
+        $rooms = collect();
+    }
 
     return view('janji-temu', compact('doctors', 'rooms'));
 })->name('janji-temu');
@@ -479,7 +568,7 @@ Route::put('/admin/pengguna/{id}', function (Request $request, $id) {
         'password' => 'nullable|string|min:6',
     ]);
 
-    if ($validated['password']) {
+    if (!empty($validated['password'])) {
         $validated['password'] = bcrypt($validated['password']);
     } else {
         unset($validated['password']);
@@ -502,8 +591,45 @@ Route::get('/gizi/pemesanan-menu/create', function () {
 })->name('pemesanan-menu.create');
 
 Route::get('/gizi/pemesanan-menu', function () {
-    $menus = DB::table('pemesanan_menu')->orderBy('tanggal', 'desc')->get();
-    return view('gizi.pemesanan-menu', compact('menus'));
+    try {
+        $menus = DB::table('pemesanan_menu')->orderBy('tanggal', 'desc')->get();
+        // try to load master menu items if available
+        try {
+            $menusList = DB::table('menus')->orderBy('nama_menu')->get();
+        } catch (\Exception $e) {
+            $menusList = collect();
+        }
+
+        $todayOrders = DB::table('pemesanan_menu')->whereDate('tanggal', now()->toDateString())->count();
+        try {
+            $todayReports = DB::table('laporan_pemesanan')->whereDate('created_at', now()->toDateString())->count();
+        } catch (\Exception $e) {
+            $todayReports = 0;
+        }
+        $todaySchedules = DB::table('jadwal_makan')->whereDate('created_at', now()->toDateString())->count();
+
+        $stats = [
+            'today_orders' => $todayOrders,
+            'delta_orders' => 0,
+            'today_reports' => $todayReports,
+            'delta_reports' => 0,
+            'today_schedules' => $todaySchedules,
+            'delta_schedules' => 0,
+        ];
+    } catch (\Exception $e) {
+        $menus = collect();
+        $menusList = collect();
+        $stats = [
+            'today_orders' => 0,
+            'delta_orders' => 0,
+            'today_reports' => 0,
+            'delta_reports' => 0,
+            'today_schedules' => 0,
+            'delta_schedules' => 0,
+        ];
+    }
+
+    return view('gizi.pemesanan-menu', compact('menus', 'menusList', 'stats'));
 })->name('pemesanan-menu');
 
 Route::post('/gizi/pemesanan-menu', function (Request $request) {
