@@ -176,7 +176,7 @@
                 </div>
                 
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center text-amber-600 text-xl shadow-inner animate-pulse">
+                    <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-600 text-xl shadow-inner">
                         <i class="fa-solid fa-triangle-exclamation"></i>
                     </div>
                     <div>
