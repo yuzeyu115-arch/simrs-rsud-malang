@@ -44,6 +44,7 @@
             </footer>
         </main>
     </div>
+    <script src="/js/global-buttons.js"></script>
     @stack('scripts')
 </body>
 </html>
