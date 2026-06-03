@@ -2,9 +2,19 @@ document.addEventListener('click', function(e) {
     const el = e.target.closest('a,button');
     if (!el) return;
 
-    // Prevent anchors with href="#" from navigating
+    // Prevent anchors with href="#" from navigating and show generic modal
     if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') === '#') {
         e.preventDefault();
+        // show generic modal with optional data attributes
+        const title = el.dataset.title || 'Informasi';
+        const body = el.dataset.body || 'Fitur ini belum terhubung. Kami akan menambahkannya segera.';
+        const modal = document.getElementById('modal-generic');
+        if (modal) {
+            document.getElementById('modal-generic-title').textContent = title;
+            document.getElementById('modal-generic-body').textContent = body;
+            modal.classList.remove('hidden');
+        }
+        return;
     }
 
     // Open modal when element has data-target or id=open-modal
@@ -45,5 +55,36 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         const openModal = document.querySelector('[id^="modal-"]:not(.hidden)');
         if (openModal) openModal.classList.add('hidden');
+    }
+});
+
+// Gizi filter handlers (apply/reset) if present
+document.addEventListener('click', function (e) {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    if (btn.id === 'filter-reset') {
+        e.preventDefault();
+        const form = btn.closest('form') || document;
+        const inputs = ['#filter-date','#filter-shift','#filter-kelas'];
+        inputs.forEach(sel => {
+            const el = document.querySelector(sel);
+            if (el) el.value = '';
+        });
+        // remove query params
+        history.replaceState(null, '', location.pathname);
+        return;
+    }
+    if (btn.id === 'filter-apply') {
+        e.preventDefault();
+        const date = document.querySelector('#filter-date')?.value || '';
+        const shift = document.querySelector('#filter-shift')?.value || '';
+        const kelas = document.querySelector('#filter-kelas')?.value || '';
+        const params = new URLSearchParams();
+        if (date) params.set('tanggal', date);
+        if (shift) params.set('shift', shift);
+        if (kelas) params.set('kelas', kelas);
+        const url = location.pathname + (params.toString() ? ('?'+params.toString()) : '');
+        window.location.href = url;
+        return;
     }
 });
