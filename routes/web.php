@@ -213,6 +213,16 @@ Route::post('/profile/password', function (Request $request) {
     return redirect()->route('profile')->with('success','Kata sandi berhasil diubah.');
 })->name('profile.password');
 
+// Show change password form
+Route::get('/profile/password', function () {
+    try {
+        $user = \Illuminate\Support\Facades\Auth::user() ?: \Illuminate\Support\Facades\DB::table('users')->where('id',1)->first();
+    } catch (\Exception $e) {
+        $user = (object)['name'=>'Pengguna'];
+    }
+    return view('profile-password', compact('user'));
+})->name('profile.password.form');
+
 // Rute Jadwal Operasi (Bedah)
 Route::get('/jadwal-operasi', function (Request $request) {
     try {

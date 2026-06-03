@@ -49,8 +49,8 @@
                         <h3 class="text-lg font-bold text-gray-800 mt-4">{{ $displayName }}</h3>
                         <p class="text-xs text-gray-500 mt-2">{{ $user->role ?? (\Illuminate\Support\Facades\Auth::user()->role ?? 'Tenaga Medis') }}</p>
                         <div class="mt-6 space-y-2">
-                            <a href="#" class="block px-4 py-2 rounded-xl bg-primary-green text-white font-bold hover:bg-primary-green-hover transition-all">Edit Profil</a>
-                            <a href="#" class="block px-4 py-2 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition-all">Ubah Kata Sandi</a>
+                            <a href="{{ route('profile.edit') }}" class="block px-4 py-2 rounded-xl bg-primary-green text-white font-bold hover:bg-primary-green-hover transition-all">Edit Profil</a>
+                            <a href="{{ route('profile.password.form') }}" class="block px-4 py-2 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition-all">Ubah Kata Sandi</a>
                         </div>
                     </div>
                 </div>

@@ -127,14 +127,14 @@
                  <div class="w-8 flex justify-center text-lg"><i class="fa-solid fa-cart-shopping"></i></div>
                  <span>Pemesanan Menu</span>
             </a>
-            <a href="#" class="sidebar-item flex items-center space-x-3 p-3.5 rounded-2xl text-slate-500 hover:bg-slate-50 transition-all text-sm font-bold">
-                 <div class="w-8 flex justify-center text-lg"><i class="fa-solid fa-file-invoice"></i></div>
-                 <span>Laporan Pemesanan</span>
-            </a>
-            <a href="#" class="sidebar-item flex items-center space-x-3 p-3.5 rounded-2xl text-slate-500 hover:bg-slate-50 transition-all text-sm font-bold">
-                 <div class="w-8 flex justify-center text-lg"><i class="fa-solid fa-calendar-days"></i></div>
-                 <span>Jadwal Makan</span>
-            </a>
+              <a href="#" data-title="Laporan Pemesanan" data-body="Halaman laporan pemesanan belum diimplementasikan." class="sidebar-item flex items-center space-x-3 p-3.5 rounded-2xl text-slate-500 hover:bg-slate-50 transition-all text-sm font-bold">
+                  <div class="w-8 flex justify-center text-lg"><i class="fa-solid fa-file-invoice"></i></div>
+                  <span>Laporan Pemesanan</span>
+              </a>
+              <a href="#" data-title="Jadwal Makan" data-body="Halaman jadwal makan belum tersedia." class="sidebar-item flex items-center space-x-3 p-3.5 rounded-2xl text-slate-500 hover:bg-slate-50 transition-all text-sm font-bold">
+                  <div class="w-8 flex justify-center text-lg"><i class="fa-solid fa-calendar-days"></i></div>
+                  <span>Jadwal Makan</span>
+              </a>
 
             <p class="text-[11px] font-black text-slate-400 uppercase tracking-[0.1em] px-4 mt-8 mb-2">JANJI TEMU</p>
             <a href="{{ url('/janji-temu') }}" class="sidebar-item flex items-center space-x-3 p-3.5 rounded-2xl text-slate-500 hover:bg-slate-50 transition-all text-sm font-bold">

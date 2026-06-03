@@ -2,22 +2,7 @@ document.addEventListener('click', function(e) {
     const el = e.target.closest('a,button');
     if (!el) return;
 
-    // Prevent anchors with href="#" from navigating and show generic modal
-    if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') === '#') {
-        e.preventDefault();
-        // show generic modal with optional data attributes
-        const title = el.dataset.title || 'Informasi';
-        const body = el.dataset.body || 'Fitur ini belum terhubung. Kami akan menambahkannya segera.';
-        const modal = document.getElementById('modal-generic');
-        if (modal) {
-            document.getElementById('modal-generic-title').textContent = title;
-            document.getElementById('modal-generic-body').textContent = body;
-            modal.classList.remove('hidden');
-        }
-        return;
-    }
-
-    // Open modal when element has data-target or id=open-modal
+    // Open modal when element has data-target or id=open-modal (take precedence)
     const targetSelector = el.dataset.target || (el.id === 'open-modal' ? '#modal-create' : null);
     if (targetSelector) {
         const modal = document.querySelector(targetSelector);
@@ -26,6 +11,21 @@ document.addEventListener('click', function(e) {
             // focus first input if any
             const focusEl = modal.querySelector('input,select,textarea,button');
             if (focusEl) focusEl.focus();
+        }
+        return;
+    }
+
+    // Prevent anchors with href="#" from navigating and show generic modal
+    if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') === '#') {
+        e.preventDefault();
+        // show generic modal with optional data attributes
+        const title = el.dataset.title || 'Informasi';
+        const body = el.dataset.body || 'Fitur ini belum terhubung. Minta saya untuk mengimplementasikannya.';
+        const modal = document.getElementById('modal-generic');
+        if (modal) {
+            document.getElementById('modal-generic-title').textContent = title;
+            document.getElementById('modal-generic-body').textContent = body;
+            modal.classList.remove('hidden');
         }
         return;
     }
@@ -59,13 +59,13 @@ document.addEventListener('keydown', function(e) {
 });
 
 // Gizi filter handlers (apply/reset) if present
-document.addEventListener('click', function (e) {
+document.addEventListener('click', function(e) {
     const btn = e.target.closest('button');
     if (!btn) return;
     if (btn.id === 'filter-reset') {
         e.preventDefault();
         const form = btn.closest('form') || document;
-        const inputs = ['#filter-date','#filter-shift','#filter-kelas'];
+        const inputs = ['#filter-date', '#filter-shift', '#filter-kelas'];
         inputs.forEach(sel => {
             const el = document.querySelector(sel);
             if (el) el.value = '';
@@ -76,14 +76,14 @@ document.addEventListener('click', function (e) {
     }
     if (btn.id === 'filter-apply') {
         e.preventDefault();
-        const date = document.querySelector('#filter-date')?.value || '';
-        const shift = document.querySelector('#filter-shift')?.value || '';
-        const kelas = document.querySelector('#filter-kelas')?.value || '';
+        const date = document.querySelector('#filter-date') ? .value || '';
+        const shift = document.querySelector('#filter-shift') ? .value || '';
+        const kelas = document.querySelector('#filter-kelas') ? .value || '';
         const params = new URLSearchParams();
         if (date) params.set('tanggal', date);
         if (shift) params.set('shift', shift);
         if (kelas) params.set('kelas', kelas);
-        const url = location.pathname + (params.toString() ? ('?'+params.toString()) : '');
+        const url = location.pathname + (params.toString() ? ('?' + params.toString()) : '');
         window.location.href = url;
         return;
     }

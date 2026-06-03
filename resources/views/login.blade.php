@@ -77,7 +77,7 @@
                             placeholder="Masukkan Password"
                         >
                         <div class="flex justify-end mt-1">
-                            <a href="#" class="text-[10px] font-bold text-green-700 hover:text-green-800 transition-colors uppercase tracking-wider">
+                            <a href="#" data-title="Lupa Password" data-body="Proses reset kata sandi belum aktif. Silakan hubungi administrator." class="text-[10px] font-bold text-green-700 hover:text-green-800 transition-colors uppercase tracking-wider">
                                 Lupa Password?
                             </a>
                         </div>
@@ -114,8 +114,8 @@
                 <!-- Footer Disclaimer -->
                 <div class="mt-10 text-center">
                     <p class="text-[11px] text-gray-400 leading-relaxed">
-                        Dengan masuk, Anda menyetujui <a href="#" class="text-green-600 font-bold hover:underline">kebijakan privasi</a> dan<br>
-                        <a href="#" class="text-green-600 font-bold hover:underline">ketentuan penggunaan</a> sistem.
+                        Dengan masuk, Anda menyetujui <a href="#" data-title="Kebijakan Privasi" data-body="Kebijakan privasi belum tersedia di tampilan ini." class="text-green-600 font-bold hover:underline">kebijakan privasi</a> dan<br>
+                        <a href="#" data-title="Ketentuan Penggunaan" data-body="Ketentuan penggunaan belum tersedia di tampilan ini." class="text-green-600 font-bold hover:underline">ketentuan penggunaan</a> sistem.
                     </p>
                 </div>
             </div>

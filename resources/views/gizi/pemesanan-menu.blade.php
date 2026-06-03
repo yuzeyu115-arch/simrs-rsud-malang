@@ -10,7 +10,7 @@
             <p class="mt-2 text-sm text-gray-500">Kelola pemesanan menu pasien, filter data dengan cepat, dan buat pesanan baru.</p>
         </div>
         <div class="flex flex-wrap gap-3">
-            <a href="#" id="open-modal" class="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow hover:bg-emerald-700">
+            <a href="#" id="open-modal" data-title="Buat Pemesanan" data-body="Buka formulir untuk membuat pemesanan menu pasien." class="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow hover:bg-emerald-700">
                 <i class="fa-solid fa-plus"></i>
                 <span>Buat Pemesanan</span>
             </a>
