@@ -76,9 +76,12 @@ document.addEventListener('click', function(e) {
     }
     if (btn.id === 'filter-apply') {
         e.preventDefault();
-        const date = document.querySelector('#filter-date') ? .value || '';
-        const shift = document.querySelector('#filter-shift') ? .value || '';
-        const kelas = document.querySelector('#filter-kelas') ? .value || '';
+        const dateEl = document.querySelector('#filter-date');
+        const shiftEl = document.querySelector('#filter-shift');
+        const kelasEl = document.querySelector('#filter-kelas');
+        const date = dateEl ? (dateEl.value || '') : '';
+        const shift = shiftEl ? (shiftEl.value || '') : '';
+        const kelas = kelasEl ? (kelasEl.value || '') : '';
         const params = new URLSearchParams();
         if (date) params.set('tanggal', date);
         if (shift) params.set('shift', shift);
