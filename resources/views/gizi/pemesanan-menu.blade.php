@@ -185,7 +185,7 @@
             </div>
 
             <div class="rounded-3xl bg-emerald-50 p-6 shadow-sm border border-emerald-100">
-                <h2 class="text-lg font-semibold text-emerald-800">Dengan SimpleOK</h2>
+                <h2 class="text-lg font-semibold text-emerald-800">Dengan RSUD Malang</h2>
                 <p class="mt-3 text-sm text-emerald-700">Pantau setiap pesanan dengan lebih cepat dan pastikan pasien menerima menu yang sesuai.</p>
             </div>
         </aside>

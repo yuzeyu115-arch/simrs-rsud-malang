@@ -151,6 +151,100 @@ Route::get('/notifications', function () {
     return view('notifications', compact('notifications'));
 })->name('notifications');
 
+Route::get('/quick-search', function (Request $request) {
+    $query = trim($request->query('q', ''));
+    if ($query === '') {
+        return response()->json([]);
+    }
+
+    try {
+        $results = [];
+        $search = '%' . str_replace(' ', '%', $query) . '%';
+
+        $surgeryResults = DB::table('surgery_schedules')
+            ->leftJoin('dokter_bedah', 'surgery_schedules.dokter_bedah_id', '=', 'dokter_bedah.id')
+            ->leftJoin('dokter_anestesi', 'surgery_schedules.dokter_anestesi_id', '=', 'dokter_anestesi.id')
+            ->where(function ($q) use ($search) {
+                $q->where('surgery_schedules.nama_pasien', 'like', $search)
+                  ->orWhere('dokter_bedah.nama', 'like', $search)
+                  ->orWhere('dokter_anestesi.nama', 'like', $search);
+            })
+            ->select('surgery_schedules.id', 'surgery_schedules.nama_pasien as title', 'surgery_schedules.tanggal_operasi as meta')
+            ->limit(5)
+            ->get();
+
+        foreach ($surgeryResults as $row) {
+            $results[] = [
+                'title' => 'Operasi: ' . $row->title,
+                'link' => route('jadwal-operasi'),
+                'meta' => 'Tanggal operasi: ' . date('d M Y', strtotime($row->meta)),
+                'type' => 'Jadwal Operasi',
+            ];
+        }
+
+        $appointmentResults = DB::table('appointments')
+            ->where(function ($q) use ($search) {
+                $q->where('nama_pasien', 'like', $search)
+                  ->orWhere('dokter_tujuan', 'like', $search)
+                  ->orWhere('poliklinik', 'like', $search);
+            })
+            ->select('id', 'nama_pasien as title', 'tanggal_janji as meta')
+            ->limit(5)
+            ->get();
+
+        foreach ($appointmentResults as $row) {
+            $results[] = [
+                'title' => 'Janji Temu: ' . $row->title,
+                'link' => route('janji-temu.list'),
+                'meta' => 'Tanggal: ' . date('d M Y', strtotime($row->meta)),
+                'type' => 'Janji Temu',
+            ];
+        }
+
+        $bedResults = DB::table('inpatient_beds')
+            ->where(function ($q) use ($search) {
+                $q->where('no_bed', 'like', $search)
+                  ->orWhere('ruangan', 'like', $search)
+                  ->orWhere('gedung', 'like', $search);
+            })
+            ->select('id', DB::raw("CONCAT(gedung, ' / ', lantai, ' / ', ruangan, ' / ', no_bed) as title"), 'status as meta')
+            ->limit(5)
+            ->get();
+
+        foreach ($bedResults as $row) {
+            $results[] = [
+                'title' => 'Bed: ' . $row->title,
+                'link' => route('bed-manager'),
+                'meta' => 'Status: ' . $row->meta,
+                'type' => 'Bed Manager',
+            ];
+        }
+
+        $meetingResults = DB::table('coordination_meetings')
+            ->where(function ($q) use ($search) {
+                $q->where('judul_rapat', 'like', $search)
+                  ->orWhere('pimpinan_rapat', 'like', $search)
+                  ->orWhere('peserta_rapat', 'like', $search);
+            })
+            ->select('id', 'judul_rapat as title', 'tanggal_rapat as meta')
+            ->limit(5)
+            ->get();
+
+        foreach ($meetingResults as $row) {
+            $results[] = [
+                'title' => 'Rapat: ' . $row->title,
+                'link' => route('rapat-koordinasi'),
+                'meta' => 'Tanggal: ' . date('d M Y', strtotime($row->meta)),
+                'type' => 'Rapat Koordinasi',
+            ];
+        }
+
+        return response()->json(array_values(array_slice($results, 0, 10)));
+    } catch (\Exception $e) {
+        return response()->json([]);
+    }
+})->name('quick-search');
+
 // Public patient dashboard (no login required)
 Route::get('/patient-dashboard', function () {
     return view('patient-dashboard');
@@ -368,7 +462,7 @@ Route::delete('/jadwal-operasi/{id}', function ($id) {
 
 // Rute Bed Manager
 Route::get('/bed-manager', function () {
-    return view('bed-manager');
+    return redirect()->route('bed-manager-list');
 })->name('bed-manager');
 
 // Rute Farmasi & Obat

@@ -4,8 +4,8 @@
             <i class="fa-solid fa-hospital"></i>
         </div>
         <div>
-            <p class="text-lg font-bold text-gray-900">SimpleOK</p>
-            <p class="text-xs uppercase tracking-[0.2em] text-gray-400">RSUD Malang</p>
+            <p class="text-lg font-bold text-gray-900">RSUD</p>
+            <p class="text-xs uppercase tracking-[0.2em] text-gray-400">Kota Malang</p>
         </div>
     </div>
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil - SimpleOK RSUD</title>
+    <title>Profil - RSUD Kota Malang</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
             <div class="w-8 h-8 bg-primary-green rounded-lg flex items-center justify-center text-white shadow-md">
                 <i class="fa-solid fa-hospital"></i>
             </div>
-            <span class="text-xl font-bold text-gray-800 tracking-tight">SimpleOK</span>
+            <span class="text-xl font-bold text-gray-800 tracking-tight">RSUD Malang</span>
         </div>
         <nav class="flex-1 px-4 space-y-1 overflow-y-auto">
             <a href="{{ url('/dashboard') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">

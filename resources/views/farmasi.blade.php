@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Farmasi & Obat - SimpleOK RSUD</title>
+    <title>Farmasi & Obat - RSUD Kota Malang</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -53,7 +53,7 @@
             <div class="w-8 h-8 bg-primary-green rounded-lg flex items-center justify-center text-white shadow-md">
                 <i class="fa-solid fa-hospital"></i>
             </div>
-            <span class="text-xl font-bold text-gray-800 tracking-tight">SimpleOK</span>
+            <span class="text-xl font-bold text-gray-800 tracking-tight">RSUD Malang</span>
         </div>
 
         <nav class="flex-1 px-4 space-y-1 overflow-y-auto">
@@ -529,7 +529,7 @@
             </div>
 
             <footer class="pt-6 pb-2 text-center">
-                <p class="text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">&copy; 2026 SimpleOK RSUD. ALL RIGHTS RESERVED.</p>
+                <p class="text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">&copy; 2026 RSUD Kota Malang. ALL RIGHTS RESERVED.</p>
             </footer>
         </div>
     </main>

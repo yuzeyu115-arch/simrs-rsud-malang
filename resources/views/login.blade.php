@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RS SAHABAT SEHAT - Login</title>
+    <title>RSUD Kota Malang - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,22 +13,30 @@
             background-color: #f5f5f0;
         }
         .login-card {
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.14), 0 8px 14px -8px rgba(0, 0, 0, 0.12);
         }
         .btn-masuk {
-            background-color: #1b5e20;
+            background-color: #0b7d4c;
         }
         .btn-masuk:hover {
-            background-color: #164919;
+            background-color: #095f3d;
         }
         .text-rs-green {
-            color: #1b5e20;
+            color: #0b7d4c;
         }
         .bg-cream {
-            background-color: #f3f4ee;
+            background-color: #f6f8f2;
         }
         input::placeholder {
             color: #94a3b8;
+        }
+        .login-bg {
+            background: linear-gradient(180deg, rgba(4, 87, 58, 0.72), rgba(0, 0, 0, 0.4));
+        }
+        .login-logo {
+            width: 4rem;
+            height: 4rem;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -122,18 +130,18 @@
         </div>
 
         <!-- Right Section - Image & Info -->
-        <div class="hidden lg:block w-full lg:w-[55%] relative overflow-hidden">
-            <img src="{{ asset('img/rs-building.jpg') }}" alt="Hospital Building" class="absolute inset-0 w-full h-full object-cover">
+        <div class="hidden lg:block w-full lg:w-[55%] relative overflow-hidden login-bg">
+            <img src="{{ asset('img/rsud-kota-malang.webp') }}" alt="RSUD Kota Malang" class="absolute inset-0 w-full h-full object-cover opacity-80">
             
             <!-- Gradient Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30"></div>
 
             <!-- Top Logo Section -->
             <div class="absolute top-12 left-12 flex items-center gap-4 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20">
-                <img src="{{ asset('img/logo_rs.png') }}" alt="RS Logo" class="w-16 h-16 object-contain">
+                <img src="{{ asset('img/logo.png') }}" alt="RSUD Kota Malang Logo" class="login-logo">
                 <div>
-                    <h2 class="text-white text-2xl font-black tracking-tight leading-none">RS SAHABAT SEHAT</h2>
-                    <p class="text-green-300 text-sm font-medium mt-1">Pelayanan Ramah, Kesehatan Optimal</p>
+                    <h2 class="text-white text-2xl font-black tracking-tight leading-none">RSUD Kota Malang</h2>
+                    <p class="text-green-200 text-sm font-medium mt-1">Pelayanan Terpadu dan Profesional</p>
                 </div>
             </div>
 
@@ -142,14 +150,10 @@
                 <div class="space-y-2">
                     <h3 class="text-white text-3xl font-black leading-tight">
                         Selamat Datang di Sistem Informasi<br>
-                        <span class="text-green-400">RS SAHABAT SEHAT</span>
-                    </h3>
-                    <p class="text-gray-200 text-lg font-light leading-relaxed opacity-90">
-                        Sistem terintegrasi untuk mendukung pelayanan kesehatan yang lebih cepat, tepat dan profesional.
-                    </p>
-                </div>
-            </div>
-
+                            <span class="text-green-300">RSUD Kota Malang</span>
+                        </h3>
+                        <p class="text-gray-200 text-lg font-light leading-relaxed opacity-90">
+                            Sistem informasi layanan rumah sakit untuk mendukung pelayanan kesehatan yang lebih cepat, tepat, dan terintegrasi.
             <!-- Green Decorative Line -->
             <div class="absolute top-0 right-0 w-2 h-full bg-green-600/50"></div>
         </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') - SimpleOK RSUD</title>
+    <title>@yield('title') - RSUD Kota Malang</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -40,7 +40,7 @@
             @yield('content')
             
             <footer class="mt-10 py-4 border-t border-gray-200 text-center text-xs text-gray-400">
-                &copy; {{ date('Y') }} SimpleOK RSUD. All Rights Reserved.
+                &copy; {{ date('Y') }} RSUD Kota Malang. All Rights Reserved.
             </footer>
         </main>
     </div>
