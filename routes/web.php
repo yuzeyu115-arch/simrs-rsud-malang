@@ -60,21 +60,34 @@ Route::post('/login', function (\Illuminate\Http\Request $request) {
     // Redirect based on role (simple mapping)
     $role = $user->role ?? 'guest';
     $roleRoutes = [
-        'farmasi' => url('/farmasi'),
-        'gizi' => url('/gizi'),
-        'dokter' => url('/dashboard'),
-        'dokter_bedah' => url('/jadwal-operasi'),
-        'dokter_anestesi' => url('/jadwal-operasi'),
-        'perawat' => url('/bed-manager'),
-        'perawat_instrumentor' => url('/jadwal-operasi'),
-        'admin' => url('/admin/pengguna'),
-        'pj_admin' => url('/dashboard'),
-        'dpjp' => url('/dashboard'),
+        'farmasi' => route('farmasi'),
+        'gizi' => route('gizi'),
+        'dokter' => route('dashboard'),
+        'dokter_bedah' => route('alat-bedah'),
+        'dokter_anestesi' => route('jadwal-operasi'),
+        'perawat' => route('bed-manager'),
+        'ka_bedah' => route('alat-bedah'),
+        'anestesi' => route('jadwal-operasi'),
+        'admin' => route('pengguna'),
+        'pj_admin' => route('dashboard'),
+        'dpjp' => route('dashboard'),
+        'pasien' => route('patient-dashboard'),
     ];
 
-    $target = $roleRoutes[$role] ?? url('/dashboard');
+    $target = $roleRoutes[$role] ?? route('dashboard');
     return redirect()->intended($target);
 })->middleware('guest')->name('login.post');
+
+Route::get('/autologin-simrsitsk', function () {
+    $user = \App\Models\User::where('username', 'simrsITSK')->first();
+    if (! $user) {
+        return redirect()->route('login')->withErrors(['email' => 'User simrsITSK tidak ditemukan.']);
+    }
+
+    \Illuminate\Support\Facades\Auth::login($user);
+    request()->session()->regenerate();
+    return redirect()->route('dashboard');
+})->middleware('guest')->name('autologin.simrsitsk');
 
 // 4. Rute Dashboard Utama (Dinamis dari Database dengan Fallback)
 Route::get('/dashboard', function () {
@@ -1081,6 +1094,10 @@ Route::post('/logistik/ringkasan-cepat', function (Request $request) {
 
     return redirect()->route('logistik-ringkasan')->with('success', 'Data logistik berhasil disimpan.');
 })->name('logistik-ringkasan.store');
+
+Route::get('/alat-bedah', function () {
+    return redirect()->route('logistik-ringkasan');
+})->name('alat-bedah');
 
 
 Route::get('/db-check', function () {

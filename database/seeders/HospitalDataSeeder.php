@@ -16,20 +16,29 @@ class HospitalDataSeeder extends Seeder
         ]);
 
         DB::table('dokter_bedah')->insertOrIgnore([
-            ['nama' => 'Dr. Hendra, Sp.B', 'nip' => '197505052005011002', 'spesialisasi' => 'Bedah Umum', 'alamat' => 'Malang'],
+            ['nama' => 'Dr. Khatarina, Sp.B', 'nip' => '198001012009011010', 'spesialisasi' => 'Bedah Umum', 'alamat' => 'Malang'],
+            ['nama' => 'Dr. Allifia, Sp.B', 'nip' => '198202022011012011', 'spesialisasi' => 'Bedah Digestif', 'alamat' => 'Malang'],
+            ['nama' => 'Dr. Syani, Sp.B', 'nip' => '198305032012013012', 'spesialisasi' => 'Bedah Ortopedi', 'alamat' => 'Malang'],
+            ['nama' => 'Dr. Nada, Sp.B', 'nip' => '198405042013014013', 'spesialisasi' => 'Bedah Saraf', 'alamat' => 'Malang'],
             ['nama' => 'Dr. Devia Amanda, Sp.B', 'nip' => '198808082015012003', 'spesialisasi' => 'Bedah Digestif', 'alamat' => 'Malang'],
+            ['nama' => 'Dr. Hellena, Sp.B', 'nip' => '198907092016015014', 'spesialisasi' => 'Bedah Plastik', 'alamat' => 'Malang'],
         ]);
 
         DB::table('dokter_anestesi')->insertOrIgnore([
             ['nama' => 'Dr. Maya, Sp.An', 'nip' => '198202022010012004', 'alamat' => 'Malang'],
+            ['nama' => 'Dr. Kania, Sp.An', 'nip' => '198506052013014015', 'alamat' => 'Malang'],
         ]);
 
         DB::table('perawat_sirkuler')->insertOrIgnore([
-            ['nama' => 'Joko Sirkuler, S.Kep', 'nip' => '199003032018011005', 'alamat' => 'Malang'],
+            ['nama' => 'Perawat Anisa', 'nip' => '199003032018011005', 'alamat' => 'Malang'],
+            ['nama' => 'Perawat Budi', 'nip' => '199104042018011006', 'alamat' => 'Malang'],
+            ['nama' => 'Perawat Syani', 'nip' => '199204052019011007', 'alamat' => 'Malang'],
+            ['nama' => 'Perawat Nada', 'nip' => '199304062019011008', 'alamat' => 'Malang'],
         ]);
 
         DB::table('staff_farmasi')->insertOrIgnore([
             ['nama' => 'Apoteker Rian', 'nip' => '199204042019011006', 'alamat' => 'Malang'],
+            ['nama' => 'Apoteker Dewi', 'nip' => '199304052020011007', 'alamat' => 'Malang'],
         ]);
 
         // 2. Seed Medicines

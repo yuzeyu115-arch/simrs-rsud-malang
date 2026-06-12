@@ -40,7 +40,10 @@ class RuangOperasiSeeder extends Seeder
         ];
 
         foreach ($ruangs as $ruang) {
-            RuangOperasi::create($ruang);
+            RuangOperasi::updateOrCreate(
+                ['nama_ruangan' => $ruang['nama_ruangan']],
+                $ruang
+            );
         }
     }
 }

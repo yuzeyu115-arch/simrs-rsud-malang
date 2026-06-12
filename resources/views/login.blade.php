@@ -67,7 +67,7 @@
                         <input 
                             type="text" 
                             name="email" 
-                            value="SimrsITSK!"
+                            value="simrsITSK"
                             required 
                             class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all duration-200"
                             placeholder="Masukkan Username"
@@ -98,6 +98,14 @@
                         MASUK
                     </button>
                 </form>
+
+                <button
+                    type="button"
+                    onclick="window.location.href='{{ route('autologin.simrsitsk') }}'"
+                    class="w-full mt-4 bg-gray-800 text-white font-black py-4 rounded-xl transition-all duration-300 hover:bg-gray-900 shadow-lg text-lg tracking-widest"
+                >
+                    MASUK OTOMATIS SIMRS ITSK
+                </button>
 
                 <!-- Divider -->
                 <div class="relative my-10">

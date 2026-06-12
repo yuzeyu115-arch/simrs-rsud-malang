@@ -56,7 +56,10 @@ class PasienSeeder extends Seeder
         ];
 
         foreach ($pasiens as $pasien) {
-            Pasien::create($pasien);
+            Pasien::updateOrCreate(
+                ['no_rekam_medis' => $pasien['no_rekam_medis']],
+                $pasien
+            );
         }
     }
 }
