@@ -59,17 +59,6 @@
             <a href="{{ url('/farmasi') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
                  <i class="fa-solid fa-pills w-5"></i> <span>Farmasi & Obat</span>
             </a>
-            <a href="{{ url('/gizi') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
-                 <i class="fa-solid fa-utensils w-5"></i> <span>Gizi</span>
-            </a>
-
-            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest px-3 mt-6 mb-2 text-gray-400">JANJI TEMU</p>
-            <a href="{{ url('/janji-temu') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
-                 <i class="fa-solid fa-calendar-plus w-5"></i> <span>Add Appointment</span>
-            </a>
-              <a href="#" data-title="Daftar Janji Temu" data-body="Daftar janji temu belum tersedia di UI saat ini." class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
-                  <i class="fa-solid fa-list-check w-5"></i> <span>List Appointment</span>
-              </a>
 
             <div class="mt-auto pt-10 px-3 pb-8">
                 <a href="{{ url('/logout') }}" class="flex items-center space-x-3 text-red-500 font-bold text-sm hover:underline">

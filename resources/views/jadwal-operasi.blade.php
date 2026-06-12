@@ -65,20 +65,9 @@
             <a href="{{ url('/farmasi') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
                  <i class="fa-solid fa-pills w-5"></i> <span>Farmasi & Obat</span>
             </a>
-            <a href="{{ url('/gizi') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
-                 <i class="fa-solid fa-utensils w-5"></i> <span>Gizi</span>
-            </a>
             <a href="{{ url('/bed-manager') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
                  <i class="fa-solid fa-bed w-5"></i> <span>Bed Manager</span>
             </a>
-
-            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest px-3 mt-6 mb-2 text-gray-400">JANJI TEMU</p>
-              <a href="#" data-title="Tambah Janji Temu" data-body="Fitur menambah janji temu belum diimplementasikan." class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
-                  <i class="fa-solid fa-calendar-plus w-5"></i> <span>Add Appointment</span>
-              </a>
-              <a href="#" data-title="Daftar Janji Temu" data-body="Daftar janji temu belum tersedia di UI saat ini." class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
-                  <i class="fa-solid fa-list-check w-5"></i> <span>List Appointment</span>
-              </a>
 
             <div class="mt-auto pt-10 px-3 pb-8">
                 <a href="{{ url('/logout') }}" class="flex items-center space-x-3 text-red-500 font-bold text-sm hover:underline">
@@ -214,10 +203,10 @@
                     @endif
                 </div>
             </form>
-                <button class="bg-[#1b5e20] text-white px-6 py-2.5 rounded-xl font-bold flex items-center space-x-2 shadow-lg shadow-green-900/10 hover:bg-[#164919] transition-all">
+                <a href="#jadwalForm" class="bg-[#1b5e20] text-white px-6 py-2.5 rounded-xl font-bold flex items-center space-x-2 shadow-lg shadow-green-900/10 hover:bg-[#164919] transition-all">
                     <i class="fa-solid fa-plus text-sm"></i>
                     <span>Jadwal Baru</span>
-                </button>
+                </a>
             </div>
 
             @if(session('success'))
@@ -233,7 +222,7 @@
                         ? route('jadwal-operasi.update', $editingSchedule->id)
                         : route('jadwal-operasi.store');
                 @endphp
-                <form action="{{ $formAction }}" method="POST" class="grid gap-4 lg:grid-cols-2">
+                <form id="jadwalForm" action="{{ $formAction }}" method="POST" class="grid gap-4 lg:grid-cols-2">
                     @csrf
                     @if(isset($editingSchedule))
                         @method('PUT')

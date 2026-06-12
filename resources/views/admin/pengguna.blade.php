@@ -89,7 +89,6 @@
                             <option value="dokter" {{ old('role', $user->role ?? '') == 'dokter' ? 'selected' : '' }}>Dokter</option>
                             <option value="perawat" {{ old('role', $user->role ?? '') == 'perawat' ? 'selected' : '' }}>Perawat</option>
                             <option value="farmasi" {{ old('role', $user->role ?? '') == 'farmasi' ? 'selected' : '' }}>Farmasi</option>
-                            <option value="gizi" {{ old('role', $user->role ?? '') == 'gizi' ? 'selected' : '' }}>Gizi</option>
                             <option value="logistik" {{ old('role', $user->role ?? '') == 'logistik' ? 'selected' : '' }}>Logistik</option>
                         </select>
                         @error('role') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror

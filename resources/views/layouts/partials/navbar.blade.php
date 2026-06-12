@@ -2,7 +2,7 @@
     <div class="flex items-center gap-4">
         <button class="text-gray-500 md:hidden"><i class="fa-solid fa-bars"></i></button>
         <div>
-            <p class="text-sm text-gray-500">Selamat datang di Gizi</p>
+            <p class="text-sm text-gray-500">Selamat datang</p>
             <h1 class="text-xl font-semibold text-gray-800">@yield('title')</h1>
         </div>
     </div>
@@ -12,10 +12,12 @@
             <span class="absolute -top-1 -right-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white font-bold">3</span>
         </button>
         <div class="flex items-center gap-3 bg-gray-50 rounded-2xl px-4 py-2">
-            <img src="https://ui-avatars.com/api/?name=Tim+Gizi&background=10b981&color=fff" alt="Profile" class="w-10 h-10 rounded-full">
+            <div class="w-10 h-10 rounded-full bg-primary-green flex items-center justify-center text-white">
+                <i class="fa-solid fa-user"></i>
+            </div>
             <div class="text-right">
-                <p class="text-sm font-semibold text-gray-800">Tim Gizi</p>
-                <p class="text-xs text-gray-500">Manajemen Menu</p>
+                <p class="text-sm font-semibold text-gray-800">Tim RSUD</p>
+                <p class="text-xs text-gray-500">Dashboard Utama</p>
             </div>
         </div>
     </div>

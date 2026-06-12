@@ -59,7 +59,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('login') }}" method="POST" class="space-y-6">
+                <form action="{{ route('login.post') }}" method="POST" class="space-y-6">
                     @csrf
                     
                     <div class="space-y-2">
@@ -85,7 +85,7 @@
                             placeholder="Masukkan Password"
                         >
                         <div class="flex justify-end mt-1">
-                            <a href="#" data-title="Lupa Password" data-body="Proses reset kata sandi belum aktif. Silakan hubungi administrator." class="text-[10px] font-bold text-green-700 hover:text-green-800 transition-colors uppercase tracking-wider">
+                            <a href="javascript:void(0);" onclick="alert('Fungsi reset kata sandi belum aktif. Silakan hubungi administrator.');" class="text-[10px] font-bold text-green-700 hover:text-green-800 transition-colors uppercase tracking-wider">
                                 Lupa Password?
                             </a>
                         </div>
@@ -99,13 +99,11 @@
                     </button>
                 </form>
 
-                <button
-                    type="button"
-                    onclick="window.location.href='{{ route('autologin.simrsitsk') }}'"
-                    class="w-full mt-4 bg-gray-800 text-white font-black py-4 rounded-xl transition-all duration-300 hover:bg-gray-900 shadow-lg text-lg tracking-widest"
-                >
-                    MASUK OTOMATIS SIMRS ITSK
-                </button>
+                <div class="mt-6 text-center">
+                    <a href="{{ route('auto-login') }}" class="text-sm font-semibold text-green-700 hover:text-green-900 transition-colors">
+                        Masuk otomatis ke dashboard
+                    </a>
+                </div>
 
                 <!-- Divider -->
                 <div class="relative my-10">
@@ -130,8 +128,8 @@
                 <!-- Footer Disclaimer -->
                 <div class="mt-10 text-center">
                     <p class="text-[11px] text-gray-400 leading-relaxed">
-                        Dengan masuk, Anda menyetujui <a href="#" data-title="Kebijakan Privasi" data-body="Kebijakan privasi belum tersedia di tampilan ini." class="text-green-600 font-bold hover:underline">kebijakan privasi</a> dan<br>
-                        <a href="#" data-title="Ketentuan Penggunaan" data-body="Ketentuan penggunaan belum tersedia di tampilan ini." class="text-green-600 font-bold hover:underline">ketentuan penggunaan</a> sistem.
+                        Dengan masuk, Anda menyetujui <a href="javascript:void(0);" onclick="alert('Kebijakan privasi belum tersedia di tampilan ini.');" class="text-green-600 font-bold hover:underline">kebijakan privasi</a> dan<br>
+                        <a href="javascript:void(0);" onclick="alert('Ketentuan penggunaan belum tersedia di tampilan ini.');" class="text-green-600 font-bold hover:underline">ketentuan penggunaan</a> sistem.
                     </p>
                 </div>
             </div>

@@ -9,12 +9,12 @@
 <body class="min-h-screen bg-gray-50 font-sans">
     <main class="max-w-3xl mx-auto p-6">
         <h1 class="text-2xl font-bold text-gray-800 mb-4">Dashboard Pasien</h1>
-        <p class="text-gray-600 mb-6">Ini adalah versi dashboard untuk pasien (akses bebas). Informasi terbatas: status janji temu, informasi pra-bedah, dan kontak penting.</p>
+        <p class="text-gray-600 mb-6">Ini adalah versi dashboard untuk pasien (akses bebas). Informasi terbatas: status perawatan, informasi pra-bedah, dan kontak penting.</p>
 
         <div class="grid grid-cols-1 gap-4">
             <div class="bg-white p-4 rounded-lg shadow-sm">
-                <h3 class="font-bold text-gray-800">Janji Temu Terbaru</h3>
-                <p class="text-sm text-gray-500">Tidak ada janji temu.</p>
+                <h3 class="font-bold text-gray-800">Status Perawatan</h3>
+                <p class="text-sm text-gray-500">Cek informasi terbaru dan ikuti arahan tim medis.</p>
             </div>
             <div class="bg-white p-4 rounded-lg shadow-sm">
                 <h3 class="font-bold text-gray-800">Informasi Pra-Bedah</h3>

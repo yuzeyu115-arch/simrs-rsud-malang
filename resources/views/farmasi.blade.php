@@ -66,16 +66,10 @@
             <a href="{{ url('/jadwal-operasi') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
                  <i class="fa-solid fa-calendar-check w-5"></i> <span>Jadwal Operasi</span>
             </a>
-            <a href="{{ route('rapat-koordinasi') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
-                 <i class="fa-solid fa-users w-5"></i> <span>Rapat Koordinasi</span>
-            </a>
 
             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest px-3 mt-6 mb-2">KEPERAWATAN</p>
             <a href="{{ url('/bed-manager-list') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
                  <i class="fa-solid fa-bed-pulse w-5"></i> <span>Manajemen Bed</span>
-            </a>
-            <a href="{{ url('/janji-temu') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
-                 <i class="fa-solid fa-calendar-plus w-5"></i> <span>Janji Temu</span>
             </a>
 
             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest px-3 mt-6 mb-2">LOGISTIK</p>
@@ -84,14 +78,6 @@
             </a>
             <a href="{{ url('/logistik/ringkasan-cepat') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
                  <i class="fa-solid fa-boxes-stacked w-5"></i> <span>Ringkasan Logistik</span>
-            </a>
-
-            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest px-3 mt-6 mb-2">GIZI</p>
-            <a href="{{ url('/gizi/pemesanan-menu') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
-                 <i class="fa-solid fa-utensils w-5"></i> <span>Pemesanan Menu</span>
-            </a>
-            <a href="{{ url('/gizi/jadwal-makan') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
-                 <i class="fa-solid fa-clock w-5"></i> <span>Jadwal Makan</span>
             </a>
 
             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest px-3 mt-6 mb-2">STATISTIK</p>
