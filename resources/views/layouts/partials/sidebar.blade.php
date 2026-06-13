@@ -16,6 +16,10 @@
             <i class="fa-solid fa-calendar-check mr-3"></i>
             Jadwal Operasi
         </a>
+        <a href="{{ url('/status-operasi') }}" class="nav-item {{ request()->is('status-operasi*') ? 'active' : '' }}">
+            <i class="fa-solid fa-heartbeat mr-3"></i>
+            Status Operasi
+        </a>
         <a href="{{ url('/bed-manager') }}" class="nav-item {{ request()->is('bed-manager*') ? 'active' : '' }}">
             <i class="fa-solid fa-bed mr-3"></i>
             Bed Manager
@@ -23,10 +27,6 @@
         <a href="{{ url('/farmasi') }}" class="nav-item {{ request()->is('farmasi*') ? 'active' : '' }}">
             <i class="fa-solid fa-pills mr-3"></i>
             Unit Farmasi
-        </a>
-        <a href="{{ url('/pembayaran') }}" class="nav-item {{ request()->is('pembayaran*') ? 'active' : '' }}">
-            <i class="fa-solid fa-receipt mr-3"></i>
-            Pembayaran
         </a>
     </nav>
 

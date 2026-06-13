@@ -440,6 +440,45 @@ Route::delete('/jadwal-operasi/{id}', function ($id) {
     return redirect()->route('jadwal-operasi')->with('success', 'Jadwal operasi berhasil dihapus.');
 })->name('jadwal-operasi.destroy');
 
+// Rute Status Operasi
+Route::get('/status-operasi/{id?}', function ($id = null) {
+    try {
+        if ($id) {
+            $operasi = DB::table('surgery_schedules')
+                ->leftJoin('dokter_bedah', 'surgery_schedules.dokter_bedah_id', '=', 'dokter_bedah.id')
+                ->leftJoin('dokter_anestesi', 'surgery_schedules.dokter_anestesi_id', '=', 'dokter_anestesi.id')
+                ->leftJoin('operating_rooms', 'surgery_schedules.ruang_id', '=', 'operating_rooms.id')
+                ->select(
+                    'surgery_schedules.*',
+                    'dokter_bedah.nama as dokter_bedah',
+                    'dokter_anestesi.nama as dokter_anestesi',
+                    'operating_rooms.nama_ruang as nama_ruang'
+                )
+                ->where('surgery_schedules.id', $id)
+                ->first();
+        } else {
+            // Get latest/current operasi
+            $operasi = DB::table('surgery_schedules')
+                ->leftJoin('dokter_bedah', 'surgery_schedules.dokter_bedah_id', '=', 'dokter_bedah.id')
+                ->leftJoin('dokter_anestesi', 'surgery_schedules.dokter_anestesi_id', '=', 'dokter_anestesi.id')
+                ->leftJoin('operating_rooms', 'surgery_schedules.ruang_id', '=', 'operating_rooms.id')
+                ->select(
+                    'surgery_schedules.*',
+                    'dokter_bedah.nama as dokter_bedah',
+                    'dokter_anestesi.nama as dokter_anestesi',
+                    'operating_rooms.nama_ruang as nama_ruang'
+                )
+                ->whereIn('surgery_schedules.status', ['Berjalan', 'Terjadwal'])
+                ->orderBy('surgery_schedules.tanggal_operasi', 'desc')
+                ->first();
+        }
+    } catch (\Exception $e) {
+        $operasi = null;
+    }
+
+    return view('status-operasi', compact('operasi'));
+})->name('status-operasi');
+
 // Rute Bed Manager
 Route::get('/bed-manager', function () {
     return redirect()->route('bed-manager-list');
@@ -487,48 +526,6 @@ Route::get('/farmasi', function () {
 
     return view('farmasi', compact('packages', 'medicines', 'orders', 'summary'));
 })->name('farmasi');
-
-Route::get('/pembayaran', function () {
-    try {
-        $records = DB::table('surgery_schedules')->orderBy('tanggal_operasi', 'desc')->limit(6)->get();
-    } catch (\Exception $e) {
-        $records = collect();
-    }
-
-    if ($records->isEmpty()) {
-        $records = collect([
-            (object) ['rekam_medis' => '11022026', 'nama_pasien' => 'Anisa Putri', 'jenis_operasi' => 'Apendektomi', 'klasifikasi' => 'Kecil', 'tanggal_operasi' => '2024-05-16', 'tarif' => 15000000, 'status' => 'Lunas'],
-            (object) ['rekam_medis' => '12022026', 'nama_pasien' => 'Budi Santoso', 'jenis_operasi' => 'Koleistektomi', 'klasifikasi' => 'Besar', 'tanggal_operasi' => '2024-05-16', 'tarif' => 35000000, 'status' => 'Menunggu'],
-            (object) ['rekam_medis' => '13022026', 'nama_pasien' => 'Citra Dewi', 'jenis_operasi' => 'Hernia', 'klasifikasi' => 'Kecil', 'tanggal_operasi' => '2024-05-17', 'tarif' => 12000000, 'status' => 'Lunas'],
-            (object) ['rekam_medis' => '14022026', 'nama_pasien' => 'Deni Pratama', 'jenis_operasi' => 'Laparotomi', 'klasifikasi' => 'Khusus', 'tanggal_operasi' => '2024-05-18', 'tarif' => 45000000, 'status' => 'Belum'],
-            (object) ['rekam_medis' => '15022026', 'nama_pasien' => 'Eka Lestari', 'jenis_operasi' => 'Reseksi Usus', 'klasifikasi' => 'Besar', 'tanggal_operasi' => '2024-05-18', 'tarif' => 30000000, 'status' => 'Menunggu'],
-            (object) ['rekam_medis' => '16022026', 'nama_pasien' => 'Feby Nilam', 'jenis_operasi' => 'Apendektomi', 'klasifikasi' => 'Kecil', 'tanggal_operasi' => '2024-05-19', 'tarif' => 10000000, 'status' => 'Lunas'],
-        ]);
-    } else {
-        $records = $records->map(function ($record, $index) {
-            $classes = ['Kecil', 'Besar', 'Khusus'];
-            $statuses = ['Lunas', 'Menunggu', 'Belum'];
-            return (object) [
-                'rekam_medis' => $record->nomor_rm ?? ('11' . str_pad($index + 1, 6, '0', STR_PAD_LEFT)),
-                'nama_pasien' => $record->nama_pasien ?? 'Pasien ' . ($index + 1),
-                'jenis_operasi' => $record->jenis_tindakan ?? 'Operasi Umum',
-                'klasifikasi' => $classes[$index % count($classes)],
-                'tanggal_operasi' => date('Y-m-d', strtotime($record->tanggal_operasi ?? now())),
-                'tarif' => 15000000 + ($index * 5000000),
-                'status' => $statuses[$index % count($statuses)],
-            ];
-        });
-    }
-
-    $stats = [
-        'total_operasi' => $records->count(),
-        'total_pendapatan' => 482750000,
-        'waiting' => $records->where('status', 'Menunggu')->count(),
-        'paid' => $records->where('status', 'Lunas')->count(),
-    ];
-
-    return view('pembayaran', compact('records', 'stats'));
-})->name('pembayaran');
 
 Route::post('/farmasi', function (Request $request) {
     $validated = $request->validate([
