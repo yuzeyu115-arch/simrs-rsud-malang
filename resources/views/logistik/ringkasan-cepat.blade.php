@@ -1,126 +1,129 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ringkasan Logistik Cepat - RSUD Kota Malang</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body class="bg-gray-50">
-    <div class="max-w-7xl mx-auto py-8 px-4">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Ringkasan Logistik Cepat</h1>
+@extends('layouts.app')
 
-        @if(session('success'))
-            <div class="mb-6 bg-green-50 border border-green-200 text-green-700 rounded-lg p-4">
-                {{ session('success') }}
-            </div>
-        @endif
+@section('title','Ringkasan Logistik Cepat')
 
-        <!-- Dashboard Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white rounded-lg shadow p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-semibold text-gray-500 uppercase">Bius Tersedia</p>
-                        <p class="text-3xl font-bold text-blue-600 mt-2">{{ $logistics->total_bius_tersedia ?? 0 }}</p>
-                        <p class="text-xs text-gray-500 mt-2">Unit</p>
-                    </div>
-                    <i class="fa-solid fa-syringe text-4xl text-blue-200"></i>
+@section('content')
+<div class="space-y-8">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+            <p class="text-sm text-slate-500">Logistik</p>
+            <h1 class="text-3xl font-bold text-slate-900">Ringkasan Cepat</h1>
+        </div>
+        <p class="rounded-2xl bg-slate-100 px-4 py-2 text-sm text-slate-600">Pantau stok dan status persediaan</p>
+    </div>
+
+    @if(session('success'))
+        <div class="rounded-3xl bg-emerald-50 border border-emerald-200 px-5 py-4 text-sm text-emerald-700">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <div class="grid gap-6 md:grid-cols-3">
+        <div class="card-panel p-6">
+            <div class="flex items-center justify-between gap-4">
+                <div>
+                    <p class="text-sm uppercase tracking-[0.2em] text-slate-400">Bius Tersedia</p>
+                    <p class="mt-3 text-3xl font-bold text-sky-600">{{ $logistics->total_bius_tersedia ?? 0 }}</p>
+                    <p class="text-sm text-slate-500 mt-2">Unit</p>
                 </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-semibold text-gray-500 uppercase">Cairan Infus</p>
-                        <p class="text-3xl font-bold text-green-600 mt-2">{{ $logistics->jumlah_cairan_infus ?? 0 }}</p>
-                        <p class="text-xs text-gray-500 mt-2">Botol</p>
-                    </div>
-                    <i class="fa-solid fa-droplet text-4xl text-green-200"></i>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-semibold text-gray-500 uppercase">Alat Bedah Steril</p>
-                        <p class="text-3xl font-bold text-purple-600 mt-2">{{ $logistics->jumlah_alat_bedah_steril ?? 0 }}</p>
-                        <p class="text-xs text-gray-500 mt-2">Set</p>
-                    </div>
-                    <i class="fa-solid fa-scissors text-4xl text-purple-200"></i>
+                <div class="rounded-3xl bg-sky-100 p-4 text-sky-700">
+                    <i class="fa-solid fa-syringe text-3xl"></i>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Form Input -->
-            <div class="lg:col-span-1">
-                <div class="bg-white rounded-lg shadow p-6">
-                    <h2 class="text-lg font-bold text-gray-800 mb-4">Update Stok Logistik</h2>
-                    
-                    <form action="{{ route('logistik-ringkasan.store') }}" method="POST" class="space-y-4">
-                        @csrf
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Total Bius Tersedia *</label>
-                            <input name="total_bius_tersedia" value="{{ old('total_bius_tersedia', $logistics->total_bius_tersedia ?? 0) }}" type="number" min="0" class="w-full border border-gray-300 rounded px-3 py-2">
-                            @error('total_bius_tersedia') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah Cairan Infus *</label>
-                            <input name="jumlah_cairan_infus" value="{{ old('jumlah_cairan_infus', $logistics->jumlah_cairan_infus ?? 0) }}" type="number" min="0" class="w-full border border-gray-300 rounded px-3 py-2">
-                            @error('jumlah_cairan_infus') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah Alat Bedah Steril *</label>
-                            <input name="jumlah_alat_bedah_steril" value="{{ old('jumlah_alat_bedah_steril', $logistics->jumlah_alat_bedah_steril ?? 0) }}" type="number" min="0" class="w-full border border-gray-300 rounded px-3 py-2">
-                            @error('jumlah_alat_bedah_steril') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        @if($logistics)
-                        <div class="bg-gray-50 p-3 rounded">
-                            <p class="text-xs font-semibold text-gray-600">Terakhir Dicek:</p>
-                            <p class="text-sm text-gray-700">{{ $logistics->terakhir_dicek ? date('d/m/Y H:i', strtotime($logistics->terakhir_dicek)) : '-' }}</p>
-                        </div>
-                        @endif
-
-                        <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded font-semibold hover:bg-green-700">
-                            Simpan Update
-                        </button>
-                    </form>
+        <div class="card-panel p-6">
+            <div class="flex items-center justify-between gap-4">
+                <div>
+                    <p class="text-sm uppercase tracking-[0.2em] text-slate-400">Cairan Infus</p>
+                    <p class="mt-3 text-3xl font-bold text-emerald-600">{{ $logistics->jumlah_cairan_infus ?? 0 }}</p>
+                    <p class="text-sm text-slate-500 mt-2">Botol</p>
+                </div>
+                <div class="rounded-3xl bg-emerald-100 p-4 text-emerald-700">
+                    <i class="fa-solid fa-droplet text-3xl"></i>
                 </div>
             </div>
+        </div>
 
-            <!-- History & Info -->
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-lg shadow p-6">
-                    <h2 class="text-lg font-bold text-gray-800 mb-4">Status Logistik</h2>
-                    
-                    <div class="space-y-4">
-                        <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded">
-                            <p class="font-semibold text-gray-800">Bius (Anestesi)</p>
-                            <p class="text-sm text-gray-600 mt-1">Stok saat ini: <span class="font-bold text-blue-600">{{ $logistics->total_bius_tersedia ?? 0 }} Unit</span></p>
-                            <p class="text-xs text-gray-500 mt-2">Untuk kebutuhan operasi rutin selama 1-2 minggu</p>
-                        </div>
-
-                        <div class="border-l-4 border-green-500 bg-green-50 p-4 rounded">
-                            <p class="font-semibold text-gray-800">Cairan Infus</p>
-                            <p class="text-sm text-gray-600 mt-1">Stok saat ini: <span class="font-bold text-green-600">{{ $logistics->jumlah_cairan_infus ?? 0 }} Botol</span></p>
-                            <p class="text-xs text-gray-500 mt-2">Untuk kebutuhan pasien rawat inap dan operasi</p>
-                        </div>
-
-                        <div class="border-l-4 border-purple-500 bg-purple-50 p-4 rounded">
-                            <p class="font-semibold text-gray-800">Alat Bedah Steril</p>
-                            <p class="text-sm text-gray-600 mt-1">Stok saat ini: <span class="font-bold text-purple-600">{{ $logistics->jumlah_alat_bedah_steril ?? 0 }} Set</span></p>
-                            <p class="text-xs text-gray-500 mt-2">Set lengkap untuk operasi minor dan mayor</p>
-                        </div>
-                    </div>
+        <div class="card-panel p-6">
+            <div class="flex items-center justify-between gap-4">
+                <div>
+                    <p class="text-sm uppercase tracking-[0.2em] text-slate-400">Alat Bedah Steril</p>
+                    <p class="mt-3 text-3xl font-bold text-violet-600">{{ $logistics->jumlah_alat_bedah_steril ?? 0 }}</p>
+                    <p class="text-sm text-slate-500 mt-2">Set</p>
+                </div>
+                <div class="rounded-3xl bg-violet-100 p-4 text-violet-700">
+                    <i class="fa-solid fa-scissors text-3xl"></i>
                 </div>
             </div>
         </div>
     </div>
-</body>
-</html>
+
+    <div class="grid gap-6 lg:grid-cols-[1fr_1.5fr]">
+        <section class="card-panel p-6">
+            <div class="mb-4">
+                <p class="text-sm uppercase tracking-[0.2em] text-slate-400">Update Stok</p>
+                <h2 class="mt-2 text-xl font-semibold text-slate-900">Kontrol Ketersediaan</h2>
+            </div>
+
+            <form action="{{ route('logistik-ringkasan.store') }}" method="POST" class="space-y-5">
+                @csrf
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Total Bius Tersedia *</label>
+                    <input name="total_bius_tersedia" value="{{ old('total_bius_tersedia', $logistics->total_bius_tersedia ?? 0) }}" type="number" min="0" class="input-base" />
+                    @error('total_bius_tersedia') <p class="text-rose-600 text-sm mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Jumlah Cairan Infus *</label>
+                    <input name="jumlah_cairan_infus" value="{{ old('jumlah_cairan_infus', $logistics->jumlah_cairan_infus ?? 0) }}" type="number" min="0" class="input-base" />
+                    @error('jumlah_cairan_infus') <p class="text-rose-600 text-sm mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Jumlah Alat Bedah Steril *</label>
+                    <input name="jumlah_alat_bedah_steril" value="{{ old('jumlah_alat_bedah_steril', $logistics->jumlah_alat_bedah_steril ?? 0) }}" type="number" min="0" class="input-base" />
+                    @error('jumlah_alat_bedah_steril') <p class="text-rose-600 text-sm mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                @if($logistics)
+                    <div class="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Terakhir Dicek</p>
+                        <p class="mt-2 text-sm text-slate-700">{{ $logistics->terakhir_dicek ? date('d/m/Y H:i', strtotime($logistics->terakhir_dicek)) : '-' }}</p>
+                    </div>
+                @endif
+
+                <button type="submit" class="btn-primary w-full">Simpan Update</button>
+            </form>
+        </section>
+
+        <section class="space-y-4">
+            <div class="card-panel p-6">
+                <div class="mb-4">
+                    <p class="text-sm uppercase tracking-[0.2em] text-slate-400">Status Logistik</p>
+                    <h2 class="mt-2 text-xl font-semibold text-slate-900">Ringkasan Persediaan</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="rounded-3xl border-l-4 border-sky-500 bg-sky-50 p-4">
+                        <p class="font-semibold text-slate-900">Bius (Anestesi)</p>
+                        <p class="text-sm text-slate-600 mt-1">Stok saat ini: <span class="font-semibold text-sky-700">{{ $logistics->total_bius_tersedia ?? 0 }} Unit</span></p>
+                        <p class="text-xs text-slate-500 mt-2">Untuk kebutuhan operasi rutin 1-2 minggu</p>
+                    </div>
+                    <div class="rounded-3xl border-l-4 border-emerald-500 bg-emerald-50 p-4">
+                        <p class="font-semibold text-slate-900">Cairan Infus</p>
+                        <p class="text-sm text-slate-600 mt-1">Stok saat ini: <span class="font-semibold text-emerald-700">{{ $logistics->jumlah_cairan_infus ?? 0 }} Botol</span></p>
+                        <p class="text-xs text-slate-500 mt-2">Untuk pasien rawat inap dan operasi</p>
+                    </div>
+                    <div class="rounded-3xl border-l-4 border-violet-500 bg-violet-50 p-4">
+                        <p class="font-semibold text-slate-900">Alat Bedah Steril</p>
+                        <p class="text-sm text-slate-600 mt-1">Stok saat ini: <span class="font-semibold text-violet-700">{{ $logistics->jumlah_alat_bedah_steril ?? 0 }} Set</span></p>
+                        <p class="text-xs text-slate-500 mt-2">Set lengkap untuk operasi minor dan mayor</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+@endsection

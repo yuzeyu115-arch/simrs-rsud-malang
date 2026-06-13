@@ -1,91 +1,65 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil - RSUD Kota Malang</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>tailwind.config = { theme: { extend: { colors: { 'primary-green': '#10b981' } } } }</script>
-    <style>body { font-family: 'Inter', sans-serif; background-color:#f7f9f7; }</style>
-</head>
-<body class="bg-gray-50 flex overflow-hidden min-h-screen">
+﻿@extends('layouts.app')
 
-    <aside class="w-64 bg-white border-r border-gray-100 flex flex-col flex-shrink-0 shadow-sm z-20">
-        <div class="p-6 flex items-center space-x-3">
-            <div class="w-8 h-8 bg-primary-green rounded-lg flex items-center justify-center text-white shadow-md">
-                <i class="fa-solid fa-hospital"></i>
-            </div>
-            <span class="text-xl font-bold text-gray-800 tracking-tight">RSUD Malang</span>
+@section('title','Profil Pengguna')
+
+@section('content')
+<div class="space-y-8">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+            <p class="text-sm font-medium text-slate-500">Akun Anda</p>
+            <h1 class="text-3xl font-bold text-slate-900">Profil Pengguna</h1>
+            <p class="text-sm text-slate-600 mt-2">Kelola informasi pribadi dan akses akun Anda.</p>
         </div>
-        <nav class="flex-1 px-4 space-y-1 overflow-y-auto">
-            <a href="{{ url('/dashboard') }}" class="flex items-center space-x-3 p-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all text-sm font-semibold">
-                <i class="fa-solid fa-house w-5"></i> <span>Dashboard</span>
-            </a>
-            <div class="mt-auto pt-10 px-3 pb-8">
-                <a href="{{ url('/logout') }}" class="flex items-center space-x-3 text-red-500 font-bold text-sm hover:underline">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Keluar</span>
-                </a>
-            </div>
-        </nav>
-    </aside>
+        <a href="{{ url('/dashboard') }}" class="btn-secondary">Kembali</a>
+    </div>
 
-    <main class="flex-1 overflow-y-auto">
-        <div class="sticky top-0 bg-white/80 backdrop-blur-md border-b border-gray-100 px-8 py-4 z-10 flex justify-between items-center">
-            <h2 class="text-2xl font-black text-[#1b5e20] tracking-tight">Profil Pengguna</h2>
-            <div>
-                <a href="{{ url('/dashboard') }}" class="text-sm text-gray-500 hover:underline">Kembali</a>
+    <div class="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
+        <div class="card-panel p-6 text-center">
+            @php
+                $displayName = $user->name ?? auth()->user()->name ?? 'Pengguna';
+                $initials = collect(explode(' ', trim($displayName)))->map(fn($part) => strtoupper(substr($part, 0, 1)))->join('');
+            @endphp
+            <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-emerald-700 text-3xl font-black text-white shadow-lg">{{ $initials }}</div>
+            <h2 class="mt-5 text-xl font-bold text-slate-900">{{ $displayName }}</h2>
+            <p class="text-xs uppercase tracking-[0.3em] text-slate-500 mt-2">{{ $user->role ?? auth()->user()->role ?? 'Tenaga Medis' }}</p>
+            <div class="mt-6 space-y-3">
+                <a href="{{ route('profile.edit') }}" class="block btn-primary">Edit Profil</a>
+                <a href="{{ route('profile.password.form') }}" class="block btn-secondary">Ubah Password</a>
+            </div>
+            <div class="mt-8 rounded-3xl bg-slate-50 p-5 text-left text-sm text-slate-600">
+                <p class="font-semibold text-slate-900">Akses Terakhir</p>
+                <p class="mt-2">{{ $user->last_login_at?->format('d M Y H:i') ?? 'Belum tersedia' }}</p>
+                <p class="mt-1 text-xs text-slate-500">Lokasi: {{ $user->last_login_ip ?? 'Tidak tersedia' }}</p>
             </div>
         </div>
 
-        <div class="p-8">
-            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="md:col-span-1">
-                    <div class="bg-white rounded-xl border border-gray-100 p-6 text-center shadow-sm">
-                        @php $displayName = isset($user->name) ? $user->name : (\Illuminate\Support\Facades\Auth::user()->name ?? 'Pengguna'); @endphp
-                        <div class="w-24 h-24 rounded-full bg-primary-green flex items-center justify-center text-white text-2xl font-bold mx-auto">{{ strtoupper(substr($displayName,0,1)) }}</div>
-                        <h3 class="text-lg font-bold text-gray-800 mt-4">{{ $displayName }}</h3>
-                        <p class="text-xs text-gray-500 mt-2">{{ $user->role ?? (\Illuminate\Support\Facades\Auth::user()->role ?? 'Tenaga Medis') }}</p>
-                        <div class="mt-6 space-y-2">
-                            <a href="{{ route('profile.edit') }}" class="block px-4 py-2 rounded-xl bg-primary-green text-white font-bold hover:bg-primary-green-hover transition-all">Edit Profil</a>
-                            <a href="{{ route('profile.password.form') }}" class="block px-4 py-2 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition-all">Ubah Kata Sandi</a>
-                        </div>
+        <div class="space-y-6">
+            <div class="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
+                <h2 class="text-lg font-bold text-slate-900 mb-5">Informasi Pribadi</h2>
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 mb-2">Email</p>
+                        <p class="text-sm text-slate-700">{{ $user->email ?? auth()->user()->email ?? '-' }}</p>
                     </div>
-                </div>
-
-                <div class="md:col-span-2">
-                    <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
-                        <h4 class="text-lg font-bold text-gray-800 mb-4">Informasi Pribadi</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Email</p>
-                                <p class="text-sm text-gray-700">{{ $user->email ?? (\Illuminate\Support\Facades\Auth::user()->email ?? '-') }}</p>
-                            </div>
-                            <div>
-                                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Username</p>
-                                <p class="text-sm text-gray-700">{{ $user->username ?? (\Illuminate\Support\Facades\Auth::user()->username ?? '-') }}</p>
-                            </div>
-                            <div>
-                                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Spesialisasi</p>
-                                <p class="text-sm text-gray-700">{{ $user->spesialisasi ?? (\Illuminate\Support\Facades\Auth::user()->spesialisasi ?? '-') }}</p>
-                            </div>
-                            <div>
-                                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Telepon</p>
-                                <p class="text-sm text-gray-700">{{ $user->phone ?? (\Illuminate\Support\Facades\Auth::user()->phone ?? '-') }}</p>
-                            </div>
-                        </div>
-                        <div class="mt-6">
-                            <h5 class="text-sm font-bold text-gray-800 mb-2">Tentang</h5>
-                            <p class="text-sm text-gray-600">{{ $user->bio ?? (\Illuminate\Support\Facades\Auth::user()->bio ?? 'Tidak ada deskripsi.') }}</p>
-                        </div>
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 mb-2">Username</p>
+                        <p class="text-sm text-slate-700">{{ $user->username ?? auth()->user()->username ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 mb-2">Spesialisasi</p>
+                        <p class="text-sm text-slate-700">{{ $user->spesialisasi ?? auth()->user()->spesialisasi ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 mb-2">Telepon</p>
+                        <p class="text-sm text-slate-700">{{ $user->phone ?? auth()->user()->phone ?? '-' }}</p>
                     </div>
                 </div>
             </div>
+            <div class="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
+                <h2 class="text-lg font-bold text-slate-900 mb-3">Tentang Anda</h2>
+                <p class="text-sm leading-relaxed text-slate-600">{{ $user->bio ?? auth()->user()->bio ?? 'Belum ada deskripsi.' }}</p>
+            </div>
         </div>
-
-    </main>
-
-</body>
-</html>
+    </div>
+</div>
+@endsection

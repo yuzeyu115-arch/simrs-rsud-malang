@@ -3,185 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RSUD Kota Malang - Login</title>
+    <title>Masuk - RSUD Kota Malang</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        * { font-family: 'Inter', sans-serif; }
+        html, body { 
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
         body { 
-            font-family: 'Outfit', sans-serif; 
-            background-color: #f5f5f0;
+            background: #f5f5f5; 
         }
-        .login-card {
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.14), 0 8px 14px -8px rgba(0, 0, 0, 0.12);
+        .login-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
         }
-        .btn-masuk {
-            background-color: #0b7d4c;
+        @media (max-width: 768px) {
+            .login-container {
+                grid-template-columns: 1fr;
+            }
+            .login-right {
+                display: none;
+            }
         }
-        .btn-masuk:hover {
-            background-color: #095f3d;
+        .login-left {
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
         }
-        .text-rs-green {
-            color: #0b7d4c;
+        .login-form-card {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 3rem;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
-        .bg-cream {
-            background-color: #f6f8f2;
+        .login-form-card h1 {
+            color: #1f7745;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
         }
-        input::placeholder {
-            color: #94a3b8;
+        .login-form-card p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0 0 2rem 0;
         }
-        .login-bg {
-            background: linear-gradient(180deg, rgba(4, 87, 58, 0.72), rgba(0, 0, 0, 0.4));
+        .form-group {
+            margin-bottom: 1.25rem;
         }
-        .login-logo {
-            width: 4rem;
-            height: 4rem;
-            object-fit: contain;
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        .input-field {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            color: #1f2937;
+            background: #ffffff;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            box-sizing: border-box;
+        }
+        .input-field:focus {
+            border-color: #1f7745;
+            box-shadow: 0 0 0 3px rgba(31, 119, 69, 0.1);
+        }
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+        .form-footer a {
+            color: #1f7745;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 0.85rem 1.5rem;
+            border-radius: 0.5rem;
+            background-color: #1f7745;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 8px rgba(31, 119, 69, 0.2);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+        }
+        .btn-login:hover {
+            background-color: #155e3b;
+            transform: translateY(-1px);
+        }
+        .btn-login:active {
+            transform: translateY(0);
+        }
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        .divider span {
+            background: #ffffff;
+            padding: 0 0.75rem;
+            color: #9ca3af;
+            font-size: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #d1d5db;
+            transform: translateY(-50%);
+        }
+        .social-btn {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+            background: #ffffff;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1f2937;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            box-sizing: border-box;
+        }
+        .social-btn:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+        .terms-text {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-align: center;
+            line-height: 1.4;
+        }
+        .terms-text a {
+            color: #1f7745;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .terms-text a:hover {
+            text-decoration: underline;
+        }
+        .login-right {
+            background-image: 
+                linear-gradient(180deg, rgba(255,255,255,0.15), rgba(0,0,0,0.35)),
+                url('/img/rsud-kota-malang.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: stretch;
+            position: relative;
+            overflow: hidden;
+        }
+        .hospital-header {
+            background: linear-gradient(to bottom, rgba(100, 180, 220, 0.95), rgba(50, 140, 200, 0.9));
+            padding: 2rem 1.5rem 1.5rem;
+            flex-shrink: 0;
+        }
+        .hospital-logo-icon {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        .hospital-logo-icon i {
+            font-size: 2.5rem;
+            color: #1f7745;
+        }
+        .hospital-header h2 {
+            color: #1f7745;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 0.25rem 0;
+        }
+        .hospital-header p {
+            color: #155e3b;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 0;
+        }
+        .hospital-image {
+            flex: 1;
+            background-size: cover;
+            background-position: center;
+        }
+        .hospital-footer {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.3));
+            padding: 2rem 1.5rem;
+            color: #ffffff;
+            flex-shrink: 0;
+        }
+        .hospital-footer h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            color: #1f7745;
+        }
+        .hospital-footer p {
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin: 0;
+            color: #ffffff;
+        }
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-0 m-0 overflow-hidden bg-cream">
-    <div class="flex flex-col lg:flex-row w-full min-h-screen">
-        
-        <!-- Left Section - Login Form -->
-        <div class="w-full lg:w-[45%] flex items-center justify-center p-6 lg:p-12 relative z-10">
-            <div class="bg-white rounded-3xl p-10 lg:p-14 w-full max-w-lg login-card">
-                <div class="text-center mb-10">
-                    <h1 class="text-4xl font-bold text-rs-green mb-2 tracking-tight">Selamat Datang Kembali</h1>
-                    <p class="text-[#388e3c] font-medium">Silahkan Masuk Untuk Melanjutkan ke Dashboard</p>
-                </div>
+<body>
+    <div class="login-container">
+        <!-- Left Side: Login Form -->
+        <div class="login-left">
+            <div class="login-form-card">
+                <h1>Selamat Datang Kembali</h1>
+                <p>Silahkan Masuk Untuk Melanjutkan ke Dashboard</p>
 
                 @if ($errors->any())
-                    <div class="mb-6 bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-r-lg shadow-sm">
+                    <div class="error-message">
                         @foreach ($errors->all() as $error)
-                            <p class="text-sm font-medium">{{ $error }}</p>
+                            <p>{{ $error }}</p>
                         @endforeach
                     </div>
                 @endif
 
-                <form action="{{ route('login.post') }}" method="POST" class="space-y-6">
+                <form action="{{ route('login.post') }}" method="POST">
                     @csrf
-                    
-                    <div class="space-y-2">
-                        <label class="block text-sm font-bold text-gray-800 ml-1">Username</label>
-                        <input 
-                            type="text" 
-                            name="email" 
-                            value="simrsITSK"
-                            required 
-                            class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all duration-200"
-                            placeholder="Masukkan Username"
-                        >
+
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" name="email" value="{{ old('email') }}" class="input-field" placeholder="Masukkan Username" required>
                     </div>
 
-                    <div class="space-y-2 relative">
-                        <label class="block text-sm font-bold text-gray-800 ml-1">Password</label>
-                        <input 
-                            type="password" 
-                            name="password" 
-                            value="simpleok"
-                            required 
-                            class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all duration-200"
-                            placeholder="Masukkan Password"
-                        >
-                        <div class="flex justify-end mt-1">
-                            <a href="javascript:void(0);" onclick="alert('Fungsi reset kata sandi belum aktif. Silakan hubungi administrator.');" class="text-[10px] font-bold text-green-700 hover:text-green-800 transition-colors uppercase tracking-wider">
-                                Lupa Password?
-                            </a>
-                        </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" class="input-field" placeholder="Masukkan Password" required>
                     </div>
 
-                    <button 
-                        type="submit" 
-                        class="w-full btn-masuk text-white font-black py-4 px-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg text-lg tracking-widest mt-4"
-                    >
-                        MASUK
-                    </button>
+                    <div class="form-footer">
+                        <span>Ingat saya</span>
+                        <a href="#">Lupa Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-login">MASUK</button>
                 </form>
 
-                <div class="mt-6 text-center">
-                    <a href="{{ route('auto-login') }}" class="text-sm font-semibold text-green-700 hover:text-green-900 transition-colors">
-                        Masuk otomatis ke dashboard
-                    </a>
+                <div class="divider">
+                    <span>atau</span>
                 </div>
 
-                <!-- Divider -->
-                <div class="relative my-10">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-200"></div>
-                    </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="px-4 bg-white text-gray-400 font-medium lowercase">atau</span>
-                    </div>
-                </div>
-
-                <!-- Google Login -->
-                <a 
-                    href="{{ route('auth.google') }}" 
-                    onclick="handleGoogleLogin(event)"
-                    class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-600 font-bold py-4 px-4 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md"
-                >
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5" alt="Google">
-                    <span class="text-gray-500">Masuk Dengan Google</span>
+                <a href="{{ route('auth.google') }}" class="social-btn">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Masuk dengan Google
                 </a>
 
-                <!-- Footer Disclaimer -->
-                <div class="mt-10 text-center">
-                    <p class="text-[11px] text-gray-400 leading-relaxed">
-                        Dengan masuk, Anda menyetujui <a href="javascript:void(0);" onclick="alert('Kebijakan privasi belum tersedia di tampilan ini.');" class="text-green-600 font-bold hover:underline">kebijakan privasi</a> dan<br>
-                        <a href="javascript:void(0);" onclick="alert('Ketentuan penggunaan belum tersedia di tampilan ini.');" class="text-green-600 font-bold hover:underline">ketentuan penggunaan</a> sistem.
-                    </p>
-                </div>
+                <p class="terms-text">
+                    Dengan masuk, Anda setuju dengan <a href="#">kebijakan privasi</a> dan <a href="#">ketentuan layanan</a>.
+                </p>
             </div>
         </div>
 
-        <!-- Right Section - Image & Info -->
-        <div class="hidden lg:block w-full lg:w-[55%] relative overflow-hidden login-bg">
-            <img src="{{ asset('img/rsud-kota-malang.webp') }}" alt="RSUD Kota Malang" class="absolute inset-0 w-full h-full object-cover opacity-80">
-            
-            <!-- Gradient Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30"></div>
-
-            <!-- Top Logo Section -->
-            <div class="absolute top-12 left-12 flex items-center gap-4 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20">
-                <img src="{{ asset('img/logo.png') }}" alt="RSUD Kota Malang Logo" class="login-logo">
-                <div>
-                    <h2 class="text-white text-2xl font-black tracking-tight leading-none">RSUD Kota Malang</h2>
-                    <p class="text-green-200 text-sm font-medium mt-1">Pelayanan Terpadu dan Profesional</p>
+        <!-- Right Side: Hospital Image & Info -->
+        <div class="login-right">
+            <div class="hospital-header">
+                <div class="hospital-logo-icon">
+                    <i class="fas fa-hospital"></i>
                 </div>
+                <h2>RSUD KOTA MALANG</h2>
+                <p>Pelayanan Ramah, Kesehatan Optimal</p>
             </div>
-
-            <!-- Bottom Content -->
-            <div class="absolute bottom-16 left-12 right-12 max-w-2xl">
-                <div class="space-y-2">
-                    <h3 class="text-white text-3xl font-black leading-tight">
-                        Selamat Datang di Sistem Informasi<br>
-                            <span class="text-green-300">RSUD Kota Malang</span>
-                        </h3>
-                        <p class="text-gray-200 text-lg font-light leading-relaxed opacity-90">
-                            Sistem informasi layanan rumah sakit untuk mendukung pelayanan kesehatan yang lebih cepat, tepat, dan terintegrasi.
-            <!-- Green Decorative Line -->
-            <div class="absolute top-0 right-0 w-2 h-full bg-green-600/50"></div>
+            <div class="hospital-image"></div>
+            <div class="hospital-footer">
+                <h3>Selamat Datang di Sistem Informasi</h3>
+                <h3 style="margin-top: 0; margin-bottom: 1rem;">RSUD KOTA MALANG</h3>
+                <p>Sistem terintegrasi untuk mendukung pelayanan kesehatan yang lebih cepat, tepat dan profesional.</p>
+            </div>
         </div>
-    </div>
-    <!-- Google Login Loading Overlay -->
-    <div id="google-loading" class="fixed inset-0 bg-white/80 backdrop-blur-md z-[100] flex flex-col items-center justify-center hidden opacity-0 transition-opacity duration-300">
-        <div class="relative w-24 h-24 mb-6">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-full h-full animate-pulse" alt="Google">
-            <div class="absolute inset-0 border-4 border-green-500/30 border-t-green-600 rounded-full animate-spin"></div>
-        </div>
-        <h3 class="text-2xl font-bold text-gray-800 tracking-tight">Menghubungkan ke Google...</h3>
-        <p class="text-gray-500 mt-2 font-medium">Mohon tunggu sebentar</p>
     </div>
 
     <script>
-        function handleGoogleLogin(e) {
-            const overlay = document.getElementById('google-loading');
-            overlay.classList.remove('hidden');
-            setTimeout(() => {
-                overlay.classList.add('opacity-100');
-            }, 10);
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Optional: Auto-fill credentials for testing
+            // document.querySelector('input[name="email"]').value = 'admin';
+            // document.querySelector('input[name="password"]').value = 'AdminSimrsITSK!';
+        });
     </script>
 </body>
 </html>

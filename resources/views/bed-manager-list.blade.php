@@ -1,157 +1,137 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manajemen Tempat Tidur - RSUD Kota Malang</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body class="bg-gray-50">
-    <div class="max-w-7xl mx-auto py-8 px-4">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Manajemen Tempat Tidur</h1>
+﻿@extends('layouts.app')
 
-        @if(session('success'))
-            <div class="mb-6 bg-green-50 border border-green-200 text-green-700 rounded-lg p-4">
-                {{ session('success') }}
-            </div>
-        @endif
+@section('title','Bed Manager')
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-1">
-                <div class="bg-white rounded-lg shadow p-6">
-                    <h2 class="text-lg font-bold text-gray-800 mb-4">{{ isset($bed) ? 'Edit Tempat Tidur' : 'Tambah Tempat Tidur' }}</h2>
-                    
-                    @php
-                        $action = isset($bed) ? route('bed-manager.update', $bed->id) : route('bed-manager.store');
-                    @endphp
-                    <form action="{{ $action }}" method="POST" class="space-y-4">
-                        @csrf
-                        @if(isset($bed)) @method('PUT') @endif
+@push('styles')
+<style>
+    .card-stat {
+        border-radius: 1rem;
+        background: #ffffff;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        padding: 1.5rem;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+    }
+    .badge-tersedia,
+    .badge-terisi,
+    .badge-booking,
+    .badge-maintenance {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 9999px;
+        padding: 0.375rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+    .badge-tersedia { background: #dcfce7; color: #166534; }
+    .badge-terisi { background: #DBEAFE; color: #1D4ED8; }
+    .badge-booking { background: #E0F2FE; color: #0284C7; }
+    .badge-maintenance { background: #FEF3C7; color: #92400E; }
+</style>
+@endpush
 
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Gedung *</label>
-                            <input name="gedung" value="{{ old('gedung', $bed->gedung ?? '') }}" type="text" class="w-full border border-gray-300 rounded px-3 py-2">
-                            @error('gedung') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
-                        </div>
+@section('content')
+<div class="space-y-8">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+            <p class="text-sm font-medium text-slate-500">Manajemen Bed</p>
+            <h1 class="text-3xl font-bold text-slate-900">Bed Manager</h1>
+            <p class="text-sm text-slate-600 mt-2">Kelola ketersediaan dan status tempat tidur pasien dengan mudah.</p>
+        </div>
+        <a href="#" class="btn-primary">
+            <i class="fas fa-plus"></i>
+            Tambah Bed
+        </a>
+    </div>
 
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Lantai *</label>
-                            <input name="lantai" value="{{ old('lantai', $bed->lantai ?? '') }}" type="text" class="w-full border border-gray-300 rounded px-3 py-2">
-                            @error('lantai') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Ruangan *</label>
-                            <input name="ruangan" value="{{ old('ruangan', $bed->ruangan ?? '') }}" type="text" class="w-full border border-gray-300 rounded px-3 py-2">
-                            @error('ruangan') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">No. Bed *</label>
-                            <input name="no_bed" value="{{ old('no_bed', $bed->no_bed ?? '') }}" type="text" class="w-full border border-gray-300 rounded px-3 py-2">
-                            @error('no_bed') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Jenis Kamar *</label>
-                            <select name="jenis_kamar" class="w-full border border-gray-300 rounded px-3 py-2">
-                                <option value="">Pilih Jenis</option>
-                                <option value="VIP" {{ old('jenis_kamar', $bed->jenis_kamar ?? '') == 'VIP' ? 'selected' : '' }}>VIP</option>
-                                <option value="Kelas 1" {{ old('jenis_kamar', $bed->jenis_kamar ?? '') == 'Kelas 1' ? 'selected' : '' }}>Kelas 1</option>
-                                <option value="Kelas 2" {{ old('jenis_kamar', $bed->jenis_kamar ?? '') == 'Kelas 2' ? 'selected' : '' }}>Kelas 2</option>
-                                <option value="Kelas 3" {{ old('jenis_kamar', $bed->jenis_kamar ?? '') == 'Kelas 3' ? 'selected' : '' }}>Kelas 3</option>
-                            </select>
-                            @error('jenis_kamar') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        @if(isset($bed))
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Status</label>
-                            <select name="status" class="w-full border border-gray-300 rounded px-3 py-2">
-                                <option value="Tersedia" {{ old('status', $bed->status ?? '') == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
-                                <option value="Terisi" {{ old('status', $bed->status ?? '') == 'Terisi' ? 'selected' : '' }}>Terisi</option>
-                                <option value="Booking" {{ old('status', $bed->status ?? '') == 'Booking' ? 'selected' : '' }}>Booking</option>
-                                <option value="Maintenance" {{ old('status', $bed->status ?? '') == 'Maintenance' ? 'selected' : '' }}>Maintenance</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Pasien</label>
-                            <input name="nama_pasien" value="{{ old('nama_pasien', $bed->nama_pasien ?? '') }}" type="text" class="w-full border border-gray-300 rounded px-3 py-2">
-                        </div>
-                        @endif
-
-                        <div class="flex gap-2">
-                            @if(isset($bed))
-                                <a href="{{ route('bed-manager-list') }}" class="flex-1 text-center px-4 py-2 border border-gray-300 rounded text-gray-700 font-semibold hover:bg-gray-50">Batal</a>
-                            @endif
-                            <button type="submit" class="flex-1 px-4 py-2 bg-green-600 text-white rounded font-semibold hover:bg-green-700">
-                                {{ isset($bed) ? 'Perbarui' : 'Simpan' }}
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-lg shadow overflow-hidden">
-                    <div class="p-6 border-b border-gray-200">
-                        <h2 class="text-lg font-bold text-gray-800">Daftar Tempat Tidur</h2>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm">
-                            <thead class="bg-gray-50 border-b border-gray-200">
-                                <tr>
-                                    <th class="px-4 py-3 text-left font-semibold text-gray-600">#</th>
-                                    <th class="px-4 py-3 text-left font-semibold text-gray-600">Lokasi</th>
-                                    <th class="px-4 py-3 text-left font-semibold text-gray-600">No Bed</th>
-                                    <th class="px-4 py-3 text-left font-semibold text-gray-600">Jenis</th>
-                                    <th class="px-4 py-3 text-left font-semibold text-gray-600">Status</th>
-                                    <th class="px-4 py-3 text-center font-semibold text-gray-600">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                @forelse($beds as $index => $b)
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-4 py-3">{{ $index + 1 }}</td>
-                                        <td class="px-4 py-3">{{ $b->gedung }} - {{ $b->lantai }} - {{ $b->ruangan }}</td>
-                                        <td class="px-4 py-3 font-semibold">{{ $b->no_bed }}</td>
-                                        <td class="px-4 py-3">{{ $b->jenis_kamar }}</td>
-                                        <td class="px-4 py-3">
-                                            <span class="px-2 py-1 rounded text-xs font-semibold 
-                                                {{ $b->status == 'Tersedia' ? 'bg-green-100 text-green-700' : '' }}
-                                                {{ $b->status == 'Terisi' ? 'bg-red-100 text-red-700' : '' }}
-                                                {{ $b->status == 'Booking' ? 'bg-blue-100 text-blue-700' : '' }}
-                                                {{ $b->status == 'Maintenance' ? 'bg-yellow-100 text-yellow-700' : '' }}
-                                            ">{{ $b->status }}</span>
-                                        </td>
-                                        <td class="px-4 py-3 text-center">
-                                            <div class="flex justify-center gap-2">
-                                                <a href="{{ route('bed-manager.edit', $b->id) }}" class="p-2 text-green-600 hover:bg-green-50 rounded">
-                                                    <i class="fa-solid fa-pen"></i>
-                                                </a>
-                                                <form action="{{ route('bed-manager.destroy', $b->id) }}" method="POST" onsubmit="return confirm('Hapus?');" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="p-2 text-red-600 hover:bg-red-50 rounded">
-                                                        <i class="fa-solid fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="px-4 py-6 text-center text-gray-500">Belum ada data tempat tidur</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="card-stat">
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Total Bed</p>
+            <div class="mt-4 text-3xl font-black text-slate-900">{{ $beds->count() ?? 0 }}</div>
+            <p class="mt-3 text-sm text-slate-500">tersedia di sistem</p>
+        </div>
+        <div class="card-stat">
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Tersedia</p>
+            <div class="mt-4 text-3xl font-black text-emerald-600">{{ $beds->where('status', 'Tersedia')->count() ?? 0 }}</div>
+            <p class="mt-3 text-sm text-slate-500">siap digunakan</p>
+        </div>
+        <div class="card-stat">
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Terisi</p>
+            <div class="mt-4 text-3xl font-black text-blue-600">{{ $beds->where('status', 'Terisi')->count() ?? 0 }}</div>
+            <p class="mt-3 text-sm text-slate-500">sedang digunakan</p>
+        </div>
+        <div class="card-stat">
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Booking</p>
+            <div class="mt-4 text-3xl font-black text-sky-600">{{ $beds->where('status', 'Booking')->count() ?? 0 }}</div>
+            <p class="mt-3 text-sm text-slate-500">sudah dipesan</p>
         </div>
     </div>
-</body>
-</html>
+
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-200">
+            <h2 class="font-bold text-slate-900">Daftar Tempat Tidur</h2>
+            <p class="text-sm text-slate-500 mt-1">Tabel lengkap semua bed yang tersedia di rumah sakit.</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-[720px] text-sm text-slate-700">
+                <thead class="bg-slate-50 text-left text-xs uppercase tracking-[0.24em] text-slate-500">
+                    <tr>
+                        <th class="px-6 py-3">No</th>
+                        <th class="px-6 py-3">Lokasi</th>
+                        <th class="px-6 py-3">No Bed</th>
+                        <th class="px-6 py-3">Jenis</th>
+                        <th class="px-6 py-3">Status</th>
+                        <th class="px-6 py-3">Pasien</th>
+                        <th class="px-6 py-3">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                    @forelse($beds as $index => $b)
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="px-6 py-4 font-semibold">{{ $index + 1 }}</td>
+                            <td class="px-6 py-4">
+                                <div class="font-semibold text-slate-900">{{ $b->gedung }}</div>
+                                <div class="text-xs text-slate-500">Lt.{{ $b->lantai }} · {{ $b->ruangan }}</div>
+                            </td>
+                            <td class="px-6 py-4 font-semibold">{{ $b->no_bed }}</td>
+                            <td class="px-6 py-4 text-slate-600">{{ $b->jenis_kamar }}</td>
+                            <td class="px-6 py-4">
+                                @if($b->status == 'Tersedia')
+                                    <span class="badge-tersedia">Tersedia</span>
+                                @elseif($b->status == 'Terisi')
+                                    <span class="badge-terisi">Terisi</span>
+                                @elseif($b->status == 'Booking')
+                                    <span class="badge-booking">Booking</span>
+                                @else
+                                    <span class="badge-maintenance">Maintenance</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 text-slate-600 text-sm">{{ $b->nama_pasien ?? '-' }}</td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    <a href="{{ route('bed-manager.edit', $b->id) }}" class="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-emerald-100 text-emerald-600 hover:bg-emerald-50 transition" title="Edit">
+                                        <i class="fas fa-pen text-xs"></i>
+                                    </a>
+                                    <form action="{{ route('bed-manager.destroy', $b->id) }}" method="POST" onsubmit="return confirm('Yakin hapus bed ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-red-100 text-red-600 hover:bg-red-50 transition" title="Hapus">
+                                            <i class="fas fa-trash text-xs"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-16 text-center text-slate-400">
+                                <i class="fas fa-inbox text-3xl"></i>
+                                <p class="mt-4 text-sm">Belum ada data tempat tidur</p>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection

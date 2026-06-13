@@ -1,28 +1,40 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title','Ubah Kata Sandi')
 
 @section('content')
-<div class="max-w-2xl mx-auto py-8">
-    <div class="bg-white rounded-2xl p-6 shadow-sm">
-        <h1 class="text-xl font-bold mb-4">Ubah Kata Sandi</h1>
-        <form action="{{ route('profile.password') }}" method="POST">
+<div class="space-y-8">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Keamanan Akun</p>
+            <h1 class="text-4xl font-bold text-slate-900">Ubah Kata Sandi</h1>
+            <p class="mt-2 text-sm text-slate-600 max-w-2xl">Perbarui kata sandi akun Anda untuk menjaga keamanan data pribadi.</p>
+        </div>
+        <a href="{{ route('profile') }}" class="btn-secondary">Kembali ke Profil</a>
+    </div>
+
+    <div class="mx-auto max-w-2xl">
+        <div class="card-panel p-6">
+            <form action="{{ route('profile.password') }}" method="POST" class="space-y-5">
             @csrf
-            <div class="grid gap-4">
-                <div>
-                    <label class="block text-sm font-semibold">Kata Sandi Baru</label>
-                    <input type="password" name="password" class="w-full border rounded px-3 py-2" required minlength="6" />
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold">Konfirmasi Kata Sandi</label>
-                    <input type="password" name="password_confirmation" class="w-full border rounded px-3 py-2" required />
-                </div>
-                <div class="flex justify-end">
-                    <a href="{{ route('profile') }}" class="px-4 py-2 rounded border mr-2">Batal</a>
-                    <button type="submit" class="px-4 py-2 rounded bg-emerald-600 text-white">Simpan</button>
-                </div>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Kata Sandi Saat Ini</label>
+                <input type="password" name="current_password" class="input-base" required>
             </div>
-        </form>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Kata Sandi Baru</label>
+                <input type="password" name="password" class="input-base" required minlength="6">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Konfirmasi Kata Sandi Baru</label>
+                <input type="password" name="password_confirmation" class="input-base" required>
+            </div>
+            <div class="flex flex-wrap gap-3 pt-4">
+                <a href="{{ route('profile') }}" class="btn-secondary">Batal</a>
+                <button type="submit" class="btn-primary">Simpan Kata Sandi</button>
+            </div>
+            </form>
+        </div>
     </div>
 </div>
 @endsection
