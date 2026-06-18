@@ -17,15 +17,15 @@
                 @include('layouts.partials.notification-button')
             </div>
 
-            <div class="flex items-center gap-3 rounded-3xl bg-white px-4 py-2 shadow-sm">
+            <a href="{{ route('profile') }}" class="flex items-center gap-3 rounded-3xl bg-white px-4 py-2 shadow-sm hover:shadow-md transition-shadow">
                 <div class="h-11 w-11 rounded-full bg-emerald-600 text-white flex items-center justify-center text-lg shadow-sm">
                     <i class="fa-solid fa-user"></i>
                 </div>
                 <div class="text-right">
-                    <p class="text-sm font-semibold text-slate-900">Dr. RSUD</p>
-                    <p class="text-xs text-slate-500">Admin Utama</p>
+                    <p class="text-sm font-semibold text-slate-900">{{ auth()->user()?->name ?? 'Dr. RSUD' }}</p>
+                    <p class="text-xs text-slate-500">{{ auth()->user()?->role ? ucfirst(auth()->user()->role) : 'Admin Utama' }}</p>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 
