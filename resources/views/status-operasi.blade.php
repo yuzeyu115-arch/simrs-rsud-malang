@@ -10,10 +10,88 @@
                 <button onclick="location.reload()" class="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50">
                     <i class="fas fa-refresh mr-2"></i>Refresh
                 </button>
+                <button id="openStatusModal" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:brightness-95">
+                    <i class="fas fa-window-maximize mr-2"></i>Lihat Tampilan
+                </button>
             </div>
         </div>
 
         @if($operasi)
+        <!-- Modal / Centered card view (tampilan tambahan) -->
+        <div id="statusModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 p-6">
+            <div class="w-full max-w-3xl bg-white rounded-2xl shadow-2xl p-6 relative">
+                <button id="closeStatusModal" class="absolute -top-3 -right-3 bg-white rounded-full p-2 border shadow hover:bg-slate-50">
+                    <i class="fas fa-times text-slate-700"></i>
+                </button>
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <p class="text-xs text-slate-500">Kembali ke Dashboard</p>
+                        <h2 class="text-2xl font-extrabold text-slate-900">Operasi- {{ $operasi->nama_ruang ?? 'Ruang Operasi' }}</h2>
+                    </div>
+                    <span class="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-sm font-semibold">● Live Update</span>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <!-- Status timeline -->
+                    <div class="rounded-xl border p-6">
+                        <h3 class="font-semibold text-slate-900 mb-4">Status Operasi</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-4 h-4 rounded-full bg-emerald-500 border-4 border-emerald-100"></div>
+                                    <div class="w-px h-16 bg-slate-200 mt-2"></div>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-slate-900">Menunggu Persiapan</p>
+                                    <p class="text-sm text-slate-500">Persiapan alat, tim dan pasien • Selesai: 09.48 WIB</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-4 h-4 rounded-full bg-sky-500 border-4 border-sky-100"></div>
+                                    <div class="w-px h-16 bg-slate-200 mt-2"></div>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-slate-900">Sedang Berlangsung</p>
+                                    <p class="text-sm text-slate-500">Persiapan alat, tim dan pasien • Selesai: 10.00 WIB</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-4 h-4 rounded-full bg-gray-300 border-4 border-gray-100"></div>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-slate-900">Operasi Selesai</p>
+                                    <p class="text-sm text-slate-500">Belum Selesai</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Informasi operasi -->
+                    <div class="rounded-xl border p-6">
+                        <h3 class="font-semibold text-slate-900 mb-4">Informasi Operasi</h3>
+                        <div class="space-y-3 text-sm text-slate-600">
+                            <p><strong>Ruang Operasi:</strong> {{ $operasi->nama_ruang ?? '—' }}</p>
+                            <p><strong>Jenis AnastesI:</strong> {{ $operasi->dokter_anestesi ?? '—' }}</p>
+                            <p><strong>Estimasi Selesai:</strong> {{ $operasi->jam_mulai ? \Carbon\Carbon::parse($operasi->jam_mulai)->format('H:i') : '—' }}</p>
+                        </div>
+                        <div class="mt-6 p-4 bg-amber-50 rounded-lg">
+                            <p class="text-sm text-amber-700 font-semibold">Catatan !!</p>
+                            <p class="text-sm text-slate-700">Pastikan semua alat dan obat tersedia sebelum memulai operasi.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex flex-col gap-4 items-center">
+                    <div class="w-full flex gap-4">
+                        <button class="flex-1 px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold">Mulai Operasi</button>
+                        <button class="flex-1 px-6 py-3 bg-rose-600 text-white rounded-lg font-semibold">Selesai Operasi</button>
+                    </div>
+                    <a href="{{ route('bed-manager') }}" class="mt-4 inline-flex items-center justify-center bg-emerald-200 text-emerald-900 px-8 py-3 rounded-2xl font-bold">Menuju Ke Halaman Ruang Tunggu</a>
+                </div>
+            </div>
+        </div>
         <div class="grid grid-cols-3 gap-6">
             <!-- Left Column: Main Info -->
             <div class="col-span-2">
@@ -214,4 +292,23 @@
             padding: 2rem;
         }
     </style>
+    <script>
+        (function(){
+            const openBtn = document.getElementById('openStatusModal');
+            const closeBtn = document.getElementById('closeStatusModal');
+            const modal = document.getElementById('statusModal');
+            if(openBtn && modal){
+                openBtn.addEventListener('click', () => modal.classList.remove('hidden'));
+            }
+            if(closeBtn && modal){
+                closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+            }
+            // close on overlay click
+            if(modal){
+                modal.addEventListener('click', (e) => {
+                    if(e.target === modal) modal.classList.add('hidden');
+                });
+            }
+        })();
+    </script>
 @endsection
