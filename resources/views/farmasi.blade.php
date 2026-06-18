@@ -23,7 +23,7 @@
                 <p class="text-xs uppercase tracking-[0.2em] text-emerald-700">Status Sistem</p>
                 <p class="mt-2 text-sm font-semibold text-emerald-900">Siap Melayani</p>
             </div>
-            <button class="btn-primary">Tambah Pesanan</button>
+            <a href="{{ route('farmasi.input') }}" class="btn-primary">Tambah Pesanan</a>
         </div>
     </div>
 

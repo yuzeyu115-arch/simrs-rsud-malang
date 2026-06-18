@@ -696,6 +696,26 @@ Route::get('/farmasi/pesanan', function () {
     return view('farmasi', compact('packages', 'medicines', 'orders', 'summary'))->with('focus', 'orders');
 })->name('farmasi.pesanan');
 
+// Halaman Input Paket Obat (Unit Farmasi)
+Route::get('/farmasi/input', function () {
+    try {
+        $packages = DB::table('medicine_packages')->orderBy('nama_paket')->get();
+        $medicines = DB::table('medicines')->orderBy('nama_obat')->get();
+    } catch (\Exception $e) {
+        $packages = collect();
+        $medicines = collect();
+    }
+
+    $summary = [
+        'total_paket' => $packages->count(),
+        'waiting' => 0,
+        'ready' => 0,
+        'picked' => 0,
+    ];
+
+    return view('farmasi-input', compact('packages', 'medicines', 'summary'));
+})->name('farmasi.input');
+
 Route::post('/farmasi', function (Request $request) {
     $validated = $request->validate([
         'nama_paket' => 'required|string|max:255',
