@@ -12,7 +12,7 @@
             </div>
 
             <a href="{{ url('/jadwal-operasi/create') }}" class="btn-primary mr-2">+ Jadwal Operasi</a>
-            <a href="{{ url('/status-operasi') }}" class="btn-primary secondary mr-2">+ Status Operasi</a>
+            <a id="openStatusPage" href="{{ url('/status-operasi') }}" class="btn-primary secondary mr-2">+ Status Operasi</a>
 
             <div class="relative">
                 @include('layouts.partials.notification-button')
@@ -32,3 +32,15 @@
 
     <div id="searchResults" class="hidden absolute left-1/2 top-full z-50 mt-3 w-[560px] -translate-x-1/2 rounded-3xl border border-slate-200 bg-white shadow-xl"></div>
 </header>
+<script>
+    // Ensure clicks always navigate (workaround for overlay/JS blocks)
+    (function(){
+        var btn = document.getElementById('openStatusPage');
+        if(btn){
+            btn.addEventListener('click', function(e){
+                // let anchor behave normally, but enforce location change
+                window.location.href = this.href;
+            });
+        }
+    })();
+</script>

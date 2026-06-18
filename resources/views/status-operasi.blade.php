@@ -88,7 +88,7 @@
                         <button class="flex-1 px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold">Mulai Operasi</button>
                         <button class="flex-1 px-6 py-3 bg-rose-600 text-white rounded-lg font-semibold">Selesai Operasi</button>
                     </div>
-                    <a href="{{ route('bed-manager') }}" class="mt-4 inline-flex items-center justify-center bg-emerald-200 text-emerald-900 px-8 py-3 rounded-2xl font-bold">Menuju Ke Halaman Ruang Tunggu</a>
+                    <a href="{{ route('dashboard') }}" class="mt-4 inline-flex items-center justify-center bg-emerald-200 text-emerald-900 px-8 py-3 rounded-2xl font-bold">Menuju Ke Halaman Ruang Tunggu</a>
                 </div>
             </div>
         </div>
@@ -268,7 +268,7 @@
                     <h3 class="text-lg font-bold mb-2">Menuju Ke Halaman</h3>
                     <p class="text-sm opacity-90 mb-4">Ruang Tunggu</p>
                     <p class="text-xs opacity-80 mb-4">Monitoring ruang tunggu Pasien</p>
-                    <a href="{{ route('bed-manager') }}" class="w-full inline-flex items-center justify-center px-4 py-2 bg-white text-green-600 font-bold rounded-lg hover:bg-gray-100 transition-colors">
+                    <a href="{{ route('dashboard') }}" class="w-full inline-flex items-center justify-center px-4 py-2 bg-white text-green-600 font-bold rounded-lg hover:bg-gray-100 transition-colors">
                         Lihat Ruang Tunggu
                     </a>
                 </div>
