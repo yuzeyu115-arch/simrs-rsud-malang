@@ -19,6 +19,7 @@
             <p class="mt-2 text-sm text-slate-600 max-w-2xl">Pantau ketersediaan ruang operasi, bed, dan status paket obat dalam satu tampilan.</p>
         </div>
         <div class="flex flex-wrap gap-3">
+            <a href="{{ url('/jadwal-operasi') }}" class="btn-secondary">Jadwal Operasi</a>
             <a href="{{ url('/farmasi') }}" class="btn-primary">Unit Farmasi</a>
         </div>
     </div>

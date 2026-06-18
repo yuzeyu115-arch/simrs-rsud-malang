@@ -82,7 +82,7 @@ Route::post('/login', function (\Illuminate\Http\Request $request) {
         'dokter' => route('dashboard'),
         'dokter_bedah' => route('dashboard'),
         'dokter_anestesi' => route('jadwal-operasi'),
-        'perawat' => route('bed-manager'),
+        'perawat' => route('dashboard'),
         'ka_bedah' => route('dashboard'),
         'anestesi' => route('jadwal-operasi'),
         'admin' => route('pengguna'),
@@ -606,10 +606,7 @@ Route::get('/status-operasi/{id?}', function ($id = null) {
     return view('status-operasi', compact('operasi'));
 })->name('status-operasi');
 
-// Rute Bed Manager
-Route::get('/bed-manager', function () {
-    return redirect()->route('bed-manager-list');
-})->name('bed-manager');
+// Bed Manager routes removed (feature deprecated)
 
 // Rute Farmasi & Obat
 Route::get('/farmasi', function () {
@@ -887,57 +884,7 @@ Route::delete('/admin/pengguna/{id}', function ($id) {
     return redirect()->route('pengguna')->with('success', 'User berhasil dihapus.');
 })->name('pengguna.destroy');
 
-// ===== MANAJEMEN BED / INPATIENT BEDS =====
-Route::get('/bed-manager-list', function () {
-    $beds = DB::table('inpatient_beds')->orderBy('created_at', 'desc')->get();
-    return view('bed-manager-list', compact('beds'));
-})->name('bed-manager-list');
-
-Route::post('/bed-manager-add', function (Request $request) {
-    $validated = $request->validate([
-        'gedung' => 'required|string|max:255',
-        'lantai' => 'required|string|max:255',
-        'ruangan' => 'required|string|max:255',
-        'no_bed' => 'required|string|max:255',
-        'jenis_kamar' => 'required|string|max:255',
-    ]);
-
-    $validated['status'] = 'Tersedia';
-    $validated['created_at'] = now();
-    $validated['updated_at'] = now();
-    DB::table('inpatient_beds')->insert($validated);
-
-    return redirect()->route('bed-manager-list')->with('success', 'Bed berhasil ditambahkan.');
-})->name('bed-manager.store');
-
-Route::get('/bed-manager/{id}/edit', function ($id) {
-    $bed = DB::table('inpatient_beds')->where('id', $id)->first();
-    $beds = DB::table('inpatient_beds')->orderBy('created_at', 'desc')->get();
-    if (!$bed) abort(404);
-    return view('bed-manager-list', compact('bed', 'beds'));
-})->name('bed-manager.edit');
-
-Route::put('/bed-manager/{id}', function (Request $request, $id) {
-    $validated = $request->validate([
-        'gedung' => 'required|string|max:255',
-        'lantai' => 'required|string|max:255',
-        'ruangan' => 'required|string|max:255',
-        'no_bed' => 'required|string|max:255',
-        'jenis_kamar' => 'required|string|max:255',
-        'status' => 'required|in:Tersedia,Terisi,Booking,Maintenance',
-        'nama_pasien' => 'nullable|string|max:255',
-    ]);
-
-    $validated['updated_at'] = now();
-    DB::table('inpatient_beds')->where('id', $id)->update($validated);
-
-    return redirect()->route('bed-manager-list')->with('success', 'Bed berhasil diperbarui.');
-})->name('bed-manager.update');
-
-Route::delete('/bed-manager/{id}', function ($id) {
-    DB::table('inpatient_beds')->where('id', $id)->delete();
-    return redirect()->route('bed-manager-list')->with('success', 'Bed berhasil dihapus.');
-})->name('bed-manager.destroy');
+// Bed Manager routes removed (feature deprecated)
 
 // ===== STATISTIK & LOGISTIK =====
 Route::get('/statistik/tindakan-kunjungan', function () {
