@@ -79,12 +79,53 @@
                         <div class="flex items-center gap-3 pt-3">
                             <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-md bg-emerald-700 px-4 py-2 text-white">Simpan</button>
                             <button type="button" class="inline-flex items-center justify-center gap-2 rounded-md border border-emerald-700 px-4 py-2 text-emerald-700 bg-white">Hapus</button>
-                            <a href="{{ route('profile.password.form') }}" class="ml-auto inline-flex items-center justify-center gap-2 rounded-md border border-emerald-300 px-4 py-2 text-emerald-700 bg-white">Ubah Kata Sandi</a>
+                            <button id="openPasswordModal" type="button" class="ml-auto inline-flex items-center justify-center gap-2 rounded-md border border-emerald-300 px-4 py-2 text-emerald-700 bg-white">Ubah Kata Sandi</button>
                         </div>
                     </form>
                 </div>
             </div>
-        </div>
     </div>
 </div>
-@endsection
+
+<!-- Password modal -->
+<div id="passwordModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40">
+    <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold">Ubah Kata Sandi</h3>
+            <button id="closePasswordModal" class="text-slate-500 hover:text-slate-700">&times;</button>
+        </div>
+        <form action="{{ route('profile.password') }}" method="POST" class="space-y-3">
+            @csrf
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">KATA SANDI SAAT INI</label>
+                <input type="password" name="current_password" class="input-base border-2 border-emerald-200 focus:border-emerald-500 rounded-md w-full" required>
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">KATA SANDI BARU</label>
+                <input type="password" name="password" class="input-base border-2 border-emerald-200 focus:border-emerald-500 rounded-md w-full" required minlength="6">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">KONFIRMASI KATA SANDI BARU</label>
+                <input type="password" name="password_confirmation" class="input-base border-2 border-emerald-200 focus:border-emerald-500 rounded-md w-full" required>
+            </div>
+            <div class="pt-3">
+                <button type="submit" class="w-full rounded-md bg-emerald-700 text-white py-2">Simpan Kata Sandi</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    (function(){
+        const openBtn = document.getElementById('openPasswordModal');
+        const modal = document.getElementById('passwordModal');
+        const closeBtn = document.getElementById('closePasswordModal');
+        function open() { modal.classList.remove('hidden'); modal.classList.add('flex'); }
+        function close() { modal.classList.remove('flex'); modal.classList.add('hidden'); }
+        openBtn?.addEventListener('click', open);
+        closeBtn?.addEventListener('click', close);
+        modal?.addEventListener('click', function(e){ if(e.target === modal) close(); });
+        document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+    })();
+</script>
+
