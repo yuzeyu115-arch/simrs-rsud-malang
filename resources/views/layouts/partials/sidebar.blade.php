@@ -20,10 +20,7 @@
             <i class="fa-solid fa-heartbeat mr-3"></i>
             Status Operasi
         </a>
-        <a href="{{ url('/bed-manager') }}" class="nav-item {{ request()->is('bed-manager*') ? 'active' : '' }}">
-            <i class="fa-solid fa-bed mr-3"></i>
-            Bed Manager
-        </a>
+        <!-- Bed Manager removed per design request -->
         <a href="{{ url('/farmasi') }}" class="nav-item {{ request()->is('farmasi*') ? 'active' : '' }}">
             <i class="fa-solid fa-pills mr-3"></i>
             Unit Farmasi
