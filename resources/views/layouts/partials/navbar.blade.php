@@ -11,7 +11,6 @@
                 <input id="globalSearch" type="search" placeholder="Pencarian Cepat..." class="border-0 bg-transparent p-0 text-sm text-slate-700 outline-none focus:ring-0 w-72" autocomplete="off">
             </div>
 
-            <a href="{{ url('/jadwal-operasi/create') }}" class="btn-primary mr-2">+ Jadwal Operasi</a>
             <a id="openStatusPage" href="{{ url('/status-operasi') }}" class="btn-primary secondary mr-2">+ Status Operasi</a>
 
             <div class="relative">
