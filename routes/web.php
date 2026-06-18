@@ -313,15 +313,44 @@ Route::get('/profile/edit', function () {
 })->name('profile.edit');
 
 Route::post('/profile/update', function (Request $request) {
-    // minimal update: attempt to update authenticated user if exists
+    // update profile, handle avatar upload/delete and other fields
     try {
         $user = \Illuminate\Support\Facades\Auth::user();
         $userId = $user?->id ?? 1;
-        \Illuminate\Support\Facades\DB::table('users')->where('id', $userId)->update([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'updated_at' => now()
-        ]);
+        $action = $request->input('action');
+        $updates = [];
+        if ($request->filled('name')) $updates['name'] = $request->input('name');
+        if ($request->filled('email')) $updates['email'] = $request->input('email');
+        if ($request->filled('phone')) $updates['phone'] = $request->input('phone');
+        if ($request->filled('spesialisasi')) $updates['spesialisasi'] = $request->input('spesialisasi');
+        if ($request->filled('bio')) $updates['bio'] = $request->input('bio');
+
+        // handle avatar upload
+        if ($request->hasFile('avatar') && $action === 'save_avatar') {
+            try {
+                $path = $request->file('avatar')->store('avatars', 'public');
+                // store path as storage/avatars/xxx
+                $updates['avatar'] = 'storage/' . $path;
+            } catch (\Exception $e) {
+                // ignore upload errors
+            }
+        } elseif ($action === 'delete_avatar') {
+            try {
+                $existing = \Illuminate\Support\Facades\DB::table('users')->where('id', $userId)->value('avatar');
+                if ($existing) {
+                    $file = str_replace('storage/', '', $existing);
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($file);
+                }
+                $updates['avatar'] = null;
+            } catch (\Exception $e) {
+                // ignore
+            }
+        }
+
+        if (!empty($updates)) {
+            $updates['updated_at'] = now();
+            \Illuminate\Support\Facades\DB::table('users')->where('id', $userId)->update($updates);
+        }
     } catch (\Exception $e) {
         // ignore
     }
