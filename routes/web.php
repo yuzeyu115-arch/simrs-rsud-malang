@@ -169,6 +169,64 @@ Route::get('/notifications', function () {
     return view('notifications', compact('notifications'));
 })->name('notifications');
 
+Route::get('/notifications/create', function () {
+    try {
+        $notifications = \Illuminate\Support\Facades\DB::table('notifications')->orderBy('created_at','desc')->limit(50)->get();
+    } catch (\Exception $e) {
+        $notifications = collect();
+    }
+    return view('notifications', compact('notifications'))->with('mode', 'create');
+})->name('notifications.create');
+
+Route::post('/notifications', function (Request $request) {
+    $validated = $request->validate([
+        'judul' => 'required|string|max:255',
+        'pesan' => 'required|string',
+        'tipe' => 'required|string|in:Info,Warning,Danger',
+    ]);
+
+    $validated['created_at'] = now();
+    $validated['updated_at'] = now();
+
+    \Illuminate\Support\Facades\DB::table('notifications')->insert($validated);
+
+    return redirect()->route('notifications')->with('success', 'Notifikasi berhasil ditambahkan.');
+})->name('notifications.store');
+
+Route::get('/notifications/{id}/edit', function ($id) {
+    $notification = \Illuminate\Support\Facades\DB::table('notifications')->where('id', $id)->first();
+    if (! $notification) {
+        abort(404);
+    }
+
+    try {
+        $notifications = \Illuminate\Support\Facades\DB::table('notifications')->orderBy('created_at','desc')->limit(50)->get();
+    } catch (\Exception $e) {
+        $notifications = collect();
+    }
+
+    return view('notifications', compact('notifications', 'notification'))->with('mode', 'edit');
+})->name('notifications.edit');
+
+Route::put('/notifications/{id}', function (Request $request, $id) {
+    $validated = $request->validate([
+        'judul' => 'required|string|max:255',
+        'pesan' => 'required|string',
+        'tipe' => 'required|string|in:Info,Warning,Danger',
+    ]);
+
+    $validated['updated_at'] = now();
+
+    \Illuminate\Support\Facades\DB::table('notifications')->where('id', $id)->update($validated);
+
+    return redirect()->route('notifications')->with('success', 'Notifikasi berhasil diperbarui.');
+})->name('notifications.update');
+
+Route::delete('/notifications/{id}', function ($id) {
+    \Illuminate\Support\Facades\DB::table('notifications')->where('id', $id)->delete();
+    return redirect()->route('notifications')->with('success', 'Notifikasi berhasil dihapus.');
+})->name('notifications.destroy');
+
 Route::get('/quick-search', function (Request $request) {
     $query = trim($request->query('q', ''));
     if ($query === '') {
@@ -440,6 +498,75 @@ Route::delete('/jadwal-operasi/{id}', function ($id) {
     return redirect()->route('jadwal-operasi')->with('success', 'Jadwal operasi berhasil dihapus.');
 })->name('jadwal-operasi.destroy');
 
+Route::get('/status-operasi/{id}/notify', function ($id) {
+    try {
+        $operasi = DB::table('surgery_schedules')->where('id', $id)->first();
+        $title = 'Notifikasi Operasi';
+        $message = 'Notifikasi untuk operasi ' . ($operasi->nama_pasien ?? 'pasien') . ' berhasil dikirim.';
+        \Illuminate\Support\Facades\DB::table('notifications')->insert([
+            'judul' => $title,
+            'pesan' => $message,
+            'tipe' => 'Info',
+            'is_read' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    } catch (\Exception $e) {
+        // ignore
+    }
+    return redirect()->route('status-operasi', ['id' => $id])->with('success', 'Notifikasi operasi berhasil dikirim.');
+})->name('status-operasi.notify');
+
+Route::get('/status-operasi/{id}/print', function ($id) {
+    try {
+        $operasi = DB::table('surgery_schedules')
+            ->leftJoin('dokter_bedah', 'surgery_schedules.dokter_bedah_id', '=', 'dokter_bedah.id')
+            ->leftJoin('dokter_anestesi', 'surgery_schedules.dokter_anestesi_id', '=', 'dokter_anestesi.id')
+            ->leftJoin('operating_rooms', 'surgery_schedules.ruang_id', '=', 'operating_rooms.id')
+            ->select(
+                'surgery_schedules.*',
+                'dokter_bedah.nama as dokter_bedah',
+                'dokter_anestesi.nama as dokter_anestesi',
+                'operating_rooms.nama_ruang as nama_ruang'
+            )
+            ->where('surgery_schedules.id', $id)
+            ->first();
+    } catch (\Exception $e) {
+        $operasi = null;
+    }
+
+    if (! $operasi) {
+        abort(404);
+    }
+
+    return view('status-operasi-print', compact('operasi'));
+})->name('status-operasi.print');
+
+Route::get('/status-operasi/{id}/photo', function ($id) {
+    try {
+        $operasi = DB::table('surgery_schedules')
+            ->leftJoin('dokter_bedah', 'surgery_schedules.dokter_bedah_id', '=', 'dokter_bedah.id')
+            ->leftJoin('dokter_anestesi', 'surgery_schedules.dokter_anestesi_id', '=', 'dokter_anestesi.id')
+            ->leftJoin('operating_rooms', 'surgery_schedules.ruang_id', '=', 'operating_rooms.id')
+            ->select(
+                'surgery_schedules.*',
+                'dokter_bedah.nama as dokter_bedah',
+                'dokter_anestesi.nama as dokter_anestesi',
+                'operating_rooms.nama_ruang as nama_ruang'
+            )
+            ->where('surgery_schedules.id', $id)
+            ->first();
+    } catch (\Exception $e) {
+        $operasi = null;
+    }
+
+    if (! $operasi) {
+        abort(404);
+    }
+
+    return view('status-operasi-photo', compact('operasi'));
+})->name('status-operasi.photo');
+
 // Rute Status Operasi
 Route::get('/status-operasi/{id?}', function ($id = null) {
     try {
@@ -526,6 +653,48 @@ Route::get('/farmasi', function () {
 
     return view('farmasi', compact('packages', 'medicines', 'orders', 'summary'));
 })->name('farmasi');
+
+Route::get('/farmasi/pesanan', function () {
+    try {
+        $packages = DB::table('medicine_packages')->orderBy('nama_paket')->get();
+        $medicines = DB::table('medicines')->orderBy('nama_obat')->get();
+    } catch (\Exception $e) {
+        $packages = collect();
+        $medicines = collect();
+    }
+
+    $orders = $packages->map(function ($package, $index) {
+        $statuses = ['Menunggu Disiapkan', 'Siap Diambil', 'Sudah Diambil'];
+        return (object) [
+            'id' => $package->id,
+            'order_id' => 'POB-250507-' . str_pad($index + 1, 3, '0', STR_PAD_LEFT),
+            'nama_paket' => $package->nama_paket,
+            'jumlah_item' => $package->total_paket ?? rand(5, 15),
+            'dipesan_oleh' => 'Perawat Anestesi',
+            'waktu_pesan' => now()->subDays($index)->format('d M Y H:i'),
+            'status' => $statuses[$index % count($statuses)],
+        ];
+    });
+
+    if ($orders->isEmpty()) {
+        $orders = collect([
+            (object) ['order_id' => 'POB-250507-001', 'nama_paket' => 'Paket Anestesi Umum', 'jumlah_item' => 12, 'dipesan_oleh' => 'Perawat Anestesi', 'waktu_pesan' => '07 Mei 2025 08:30', 'status' => 'Menunggu Disiapkan'],
+            (object) ['order_id' => 'POB-250507-002', 'nama_paket' => 'Paket Spinal Anestesi', 'jumlah_item' => 8, 'dipesan_oleh' => 'Perawat Anestesi', 'waktu_pesan' => '07 Mei 2025 09:15', 'status' => 'Menunggu Disiapkan'],
+            (object) ['order_id' => 'POB-250507-003', 'nama_paket' => 'Paket Emergency Anestesi', 'jumlah_item' => 15, 'dipesan_oleh' => 'Perawat Anestesi', 'waktu_pesan' => '07 Mei 2025 10:05', 'status' => 'Siap Diambil'],
+            (object) ['order_id' => 'POB-250507-004', 'nama_paket' => 'Paket Regional Anestesi', 'jumlah_item' => 9, 'dipesan_oleh' => 'Perawat Anestesi', 'waktu_pesan' => '07 Mei 2025 10:45', 'status' => 'Siap Diambil'],
+            (object) ['order_id' => 'POB-250507-005', 'nama_paket' => 'Paket Anestesi Anak', 'jumlah_item' => 7, 'dipesan_oleh' => 'Perawat Anestesi', 'waktu_pesan' => '07 Mei 2025 11:20', 'status' => 'Sudah Diambil'],
+        ]);
+    }
+
+    $summary = [
+        'total_paket' => $orders->count(),
+        'waiting' => $orders->where('status', 'Menunggu Disiapkan')->count(),
+        'ready' => $orders->where('status', 'Siap Diambil')->count(),
+        'picked' => $orders->where('status', 'Sudah Diambil')->count(),
+    ];
+
+    return view('farmasi', compact('packages', 'medicines', 'orders', 'summary'))->with('focus', 'orders');
+})->name('farmasi.pesanan');
 
 Route::post('/farmasi', function (Request $request) {
     $validated = $request->validate([

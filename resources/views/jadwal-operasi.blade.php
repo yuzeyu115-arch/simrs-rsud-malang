@@ -60,6 +60,11 @@
                     @error('tanggal_operasi')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                 </div>
                 <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-500 mb-2">Jam Mulai</label>
+                    <input name="jam_mulai" type="time" value="{{ old('jam_mulai', $editingSchedule->jam_mulai ?? '') }}" class="input-base">
+                    @error('jam_mulai')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
+                </div>
+                <div>
                     <label class="block text-xs font-semibold uppercase text-slate-500 mb-2">Ruang Operasi</label>
                     <select name="ruang_id" class="input-base">
                         <option value="">Pilih ruang operasi</option>
@@ -179,11 +184,12 @@
 
     <div class="card-panel p-6 overflow-x-auto">
         <h2 class="text-lg font-bold text-slate-900 mb-4">Daftar Jadwal Operasi</h2>
-        <table class="w-full min-w-[760px] text-sm text-slate-700">
+        <table class="w-full min-w-[860px] text-sm text-slate-700">
             <thead class="bg-slate-50 text-left text-xs uppercase tracking-[0.24em] text-slate-500">
                 <tr>
                     <th class="px-5 py-4">No.</th>
-                    <th class="px-5 py-4">Waktu</th>
+                    <th class="px-5 py-4">Tanggal</th>
+                    <th class="px-5 py-4">Jam</th>
                     <th class="px-5 py-4">Pasien</th>
                     <th class="px-5 py-4">Jenis Operasi</th>
                     <th class="px-5 py-4">Dokter</th>
@@ -204,6 +210,7 @@
                     @endphp
                     <tr class="hover:bg-slate-50 transition-colors">
                         <td class="px-5 py-4 font-semibold">{{ $index + 1 }}</td>
+                        <td class="px-5 py-4 text-slate-600">{{ date('d M Y', strtotime($schedule->tanggal_operasi ?? now())) }}</td>
                         <td class="px-5 py-4 text-slate-600">{{ date('H:i', strtotime($schedule->jam_mulai ?? now())) }}</td>
                         <td class="px-5 py-4 font-semibold text-slate-900">{{ $schedule->nama_pasien ?? '—' }}</td>
                         <td class="px-5 py-4 text-slate-600">{{ $schedule->jenis_tindakan ?? '—' }}</td>

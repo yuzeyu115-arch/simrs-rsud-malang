@@ -129,14 +129,18 @@
                 <div class="bg-white rounded-xl shadow-sm p-6">
                     <h3 class="text-lg font-bold text-slate-900 mb-4">Kontrol Operasi</h3>
                     <div class="grid grid-cols-2 gap-4">
-                        <button class="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all">
-                            <i class="fas fa-play"></i>
-                            Mulai Operasi
-                        </button>
-                        <button class="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all">
-                            <i class="fas fa-stop"></i>
-                            Selesai Operasi
-                        </button>
+                                <a href="{{ route('status-operasi.notify', $operasi->id) }}" class="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all">
+                            <i class="fas fa-bell"></i>
+                            Kirim Notifikasi
+                        </a>
+                        <a href="{{ route('status-operasi.print', $operasi->id) }}" target="_blank" class="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-slate-700 to-slate-900 text-white font-semibold rounded-lg hover:shadow-lg transition-all">
+                            <i class="fas fa-print"></i>
+                            Cetak Laporan
+                        </a>
+                        <a href="{{ route('status-operasi.photo', $operasi->id) }}" class="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-sky-500 to-sky-700 text-white font-semibold rounded-lg hover:shadow-lg transition-all">
+                            <i class="fas fa-camera"></i>
+                            Foto Prosedur
+                        </a>
                     </div>
                 </div>
             </div>
@@ -166,18 +170,18 @@
                 <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
                     <h3 class="text-lg font-bold text-slate-900 mb-4">Tindakan Cepat</h3>
                     <div class="space-y-2">
-                        <button class="w-full flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition-colors">
+                        <a href="{{ route('status-operasi.notify', $operasi->id) }}" class="w-full inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition-colors">
                             <i class="fas fa-bell"></i>
                             Kirim Notifikasi
-                        </button>
-                        <button class="w-full flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition-colors">
+                        </a>
+                        <a href="{{ route('status-operasi.print', $operasi->id) }}" target="_blank" class="w-full inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition-colors">
                             <i class="fas fa-file"></i>
                             Cetak Laporan
-                        </button>
-                        <button class="w-full flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition-colors">
+                        </a>
+                        <a href="{{ route('status-operasi.photo', $operasi->id) }}" class="w-full inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition-colors">
                             <i class="fas fa-camera"></i>
                             Foto Prosedur
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -186,9 +190,9 @@
                     <h3 class="text-lg font-bold mb-2">Menuju Ke Halaman</h3>
                     <p class="text-sm opacity-90 mb-4">Ruang Tunggu</p>
                     <p class="text-xs opacity-80 mb-4">Monitoring ruang tunggu Pasien</p>
-                    <button class="w-full px-4 py-2 bg-white text-green-600 font-bold rounded-lg hover:bg-gray-100 transition-colors">
+                    <a href="{{ route('bed-manager') }}" class="w-full inline-flex items-center justify-center px-4 py-2 bg-white text-green-600 font-bold rounded-lg hover:bg-gray-100 transition-colors">
                         Lihat Ruang Tunggu
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

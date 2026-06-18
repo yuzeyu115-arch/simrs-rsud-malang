@@ -106,7 +106,7 @@
     </div>
 
     <div class="text-center">
-        <button class="btn-primary">Lihat Semua Pesanan</button>
+        <a href="{{ route('farmasi.pesanan') }}" class="btn-primary">Lihat Semua Pesanan</a>
     </div>
 </div>
 @endsection
