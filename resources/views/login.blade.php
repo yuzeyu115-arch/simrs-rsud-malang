@@ -16,7 +16,6 @@
         html, body {
             height: 100%;
             width: 100%;
-            overflow: hidden;
             font-family: 'Poppins', sans-serif;
         }
 
@@ -576,7 +575,7 @@
                 const password = this.dataset.password;
                 document.getElementById('email').value = username;
                 document.getElementById('password').value = password;
-                document.getElementById('email').focus();
+                document.getElementById('loginForm').submit();
             });
         });
     </script>
