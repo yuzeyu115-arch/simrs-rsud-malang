@@ -58,9 +58,33 @@ Route::post('/login', function (\Illuminate\Http\Request $request) {
     // Allow login by username or email
     $identifier = $credentials['email'];
 
+    $staticUsers = [
+        'dpjb' => ['password' => 'SimrsRSUD!', 'role' => 'dpjb', 'name' => 'DPJB'],
+        'adminrsud' => ['password' => 'SimrsRSUD!', 'role' => 'admin', 'name' => 'Admin RSUD'],
+        'tpp' => ['password' => 'SimrsRSUD!', 'role' => 'tpp', 'name' => 'TPP'],
+        'kpp' => ['password' => 'SimrsRSUD!', 'role' => 'kpp', 'name' => 'KPP'],
+        'farmasi' => ['password' => 'SimrsRSUD!', 'role' => 'farmasi', 'name' => 'Unit Farmasi'],
+        'kepanes' => ['password' => 'SimrsRSUD!', 'role' => 'perawat', 'name' => 'Perawat Anestesi'],
+    ];
+
     $user = \App\Models\User::where('email', $identifier)
         ->orWhere('username', $identifier)
         ->first();
+
+    if (! $user && isset($staticUsers[strtolower($identifier)])) {
+        $static = $staticUsers[strtolower($identifier)];
+        if ($credentials['password'] === $static['password']) {
+            $user = \App\Models\User::firstOrCreate(
+                ['username' => strtolower($identifier)],
+                [
+                    'name' => $static['name'],
+                    'email' => strtolower($identifier) . '@simrs.local',
+                    'role' => $static['role'],
+                    'password' => \Illuminate\Support\Facades\Hash::make($static['password']),
+                ]
+            );
+        }
+    }
 
     if ($user && $user->username === 'simrsITSK') {
         \Illuminate\Support\Facades\Auth::login($user);
