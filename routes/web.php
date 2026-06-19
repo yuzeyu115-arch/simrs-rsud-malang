@@ -1019,13 +1019,36 @@ Route::get('/dev/switch-role', function () {
 });
 
 Route::get('/dev/login-as/{username}', function ($username) {
+    $staticUsers = [
+        'dpjb' => ['password' => 'SimrsRSUD!', 'role' => 'dpjb', 'name' => 'DPJB'],
+        'adminrsud' => ['password' => 'SimrsRSUD!', 'role' => 'admin', 'name' => 'Admin RSUD'],
+        'tpp' => ['password' => 'SimrsRSUD!', 'role' => 'tpp', 'name' => 'TPP'],
+        'kpp' => ['password' => 'SimrsRSUD!', 'role' => 'kpp', 'name' => 'KPP'],
+        'farmasi' => ['password' => 'SimrsRSUD!', 'role' => 'farmasi', 'name' => 'Unit Farmasi'],
+        'kepanes' => ['password' => 'SimrsRSUD!', 'role' => 'perawat', 'name' => 'Perawat Anestesi'],
+    ];
+
     try {
-        $user = \App\Models\User::where('username', $username)->first();
-        if (! $user) return redirect('/dev/switch-role')->with('error', 'User not found');
+        $key = strtolower($username);
+        if (! isset($staticUsers[$key])) {
+            return redirect('/dev/switch-role')->with('error', 'Role statis tidak ditemukan');
+        }
+
+        $config = $staticUsers[$key];
+        $user = \App\Models\User::firstOrCreate(
+            ['username' => $key],
+            [
+                'name' => $config['name'],
+                'email' => $key . '@simrs.local',
+                'role' => $config['role'],
+                'password' => \Illuminate\Support\Facades\Hash::make($config['password']),
+            ]
+        );
+
         \Illuminate\Support\Facades\Auth::login($user);
         request()->session()->regenerate();
         return redirect('/dashboard')->with('success', 'Logged in as '.$user->username);
     } catch (\Exception $e) {
-        return redirect('/dev/switch-role')->with('error', 'Login failed');
+        return redirect('/dev/switch-role')->with('error', 'Login failed: ' . $e->getMessage());
     }
 });
