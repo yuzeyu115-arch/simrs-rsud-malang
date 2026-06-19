@@ -76,16 +76,18 @@ Route::post('/login', function (\Illuminate\Http\Request $request) {
     $request->session()->regenerate();
 
     // Redirect based on role (simple mapping)
-    $role = $user->role ?? 'guest';
+    $role = strtolower($user->role ?? 'guest');
     $roleRoutes = [
         'farmasi' => route('farmasi'),
+        'kpp' => route('dashboard'),
+        'tpp' => route('dashboard'),
+        'dpjb' => route('dashboard'),
+        'admin' => route('pengguna'),
         'dokter' => route('dashboard'),
         'dokter_bedah' => route('dashboard'),
         'dokter_anestesi' => route('jadwal-operasi'),
         'perawat' => route('dashboard'),
-        'ka_bedah' => route('dashboard'),
         'anestesi' => route('jadwal-operasi'),
-        'admin' => route('pengguna'),
         'pj_admin' => route('dashboard'),
         'dpjp' => route('dashboard'),
         'pasien' => route('patient-dashboard'),
@@ -95,11 +97,7 @@ Route::post('/login', function (\Illuminate\Http\Request $request) {
         return redirect()->intended(route('dashboard'));
     }
 
-    $target = $roleRoutes[$role] ?? route('dashboard');
-    return redirect()->intended($target);
-})->middleware('guest')->name('login.post');
-
-// 4. Rute Dashboard Utama (Dinamis dari Database dengan Fallback)
+    if (in_array(strtolower($user->username), ['dpjb', 'adminrsud', 'tpp', 'kpp', 'farmasi', 'kepanes'])) {
 Route::get('/dashboard', function () {
     try {
         $totalRooms = DB::table('operating_rooms')->count();

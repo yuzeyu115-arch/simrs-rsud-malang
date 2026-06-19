@@ -64,20 +64,162 @@
         .login-main {
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            height: 100vh;
-            padding: 40px 60px;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px 30px;
         }
 
-        /* Login Card */
-        .login-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 50px 45px;
+        .login-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 32px;
             width: 100%;
-            max-width: 430px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            max-width: 1080px;
+        }
+
+        .login-card,
+        .login-panel {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 40px 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.14);
             backdrop-filter: blur(10px);
+        }
+
+        .login-card {
+            max-width: 540px;
+        }
+
+        .info-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .info-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px 18px;
+            background: #f8fafc;
+        }
+
+        .info-item strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #0f172a;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .account-btn {
+            width: 100%;
+            text-align: left;
+            background: #f8fafc;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-weight: 600;
+            color: #0f172a;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .account-btn:hover {
+            border-color: #10b981;
+            background: #ecfdf5;
+        }
+
+        .patient-button {
+            width: 100%;
+            padding: 14px 16px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .patient-button:hover {
+            background: #0f766e;
+        }
+
+        .login-panel h3 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            color: #0f172a;
+        }
+
+        .login-panel p {
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 13px 16px;
+            background: linear-gradient(135deg, #0d5a36 0%, #084a2a 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 24px;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 4px 15px rgba(13, 90, 54, 0.25);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(13, 90, 54, 0.35);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .login-main {
+            overflow: auto;
+        }
+
+        @media (max-width: 1024px) {
+            .login-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .login-main {
+                padding: 16px;
+            }
+
+            .login-card,
+            .login-panel {
+                padding: 28px 22px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .rsud-header {
+                position: static;
+                text-align: center;
+                margin-bottom: 16px;
+            }
+
+            .login-main {
+                padding: 12px;
+            }
+
+            .login-card,
+            .login-panel {
+                border-radius: 16px;
+            }
         }
 
         .card-title {
@@ -314,60 +456,58 @@
 
     <!-- Main Login Section -->
     <div class="login-main">
-        <div class="login-card">
-            <div class="card-title">
-                <h1>Selamat Datang Kembali</h1>
-                <p>Silahkan Masuk Untuk Melanjutkan ke Dashboard</p>
-            </div>
-
-            @if ($errors->any())
-                <div class="error-box">
-                    <strong>Login Gagal!</strong>
-                    @foreach ($errors->all() as $error)
-                        <div>{{ $error }}</div>
-                    @endforeach
-                </div>
-            @endif
-
-            <form action="{{ route('login.post') }}" method="POST" class="login-form">
-                @csrf
-
-                <div class="form-group">
-                    <label for="email">Username</label>
-                    <input 
-                        type="text" 
-                        id="email" 
-                        name="email" 
-                        placeholder="Masukkan Username"
-                        value="SIMRS"
-                        required
-                        autofocus
-                    >
+        <div class="login-grid">
+            <div class="login-card">
+                <div class="card-title">
+                    <h1>Selamat Datang Kembali</h1>
+                    <p>Silahkan masuk untuk melanjutkan ke dashboard. Untuk pasien, cukup pilih tombol di samping.</p>
                 </div>
 
-                <div class="password-wrapper">
+                @if ($errors->any())
+                    <div class="error-box">
+                        <strong>Login Gagal!</strong>
+                        @foreach ($errors->all() as $error)
+                            <div>{{ $error }}</div>
+                        @endforeach
+                    </div>
+                @endif
+
+                <form action="{{ route('login.post') }}" method="POST" class="login-form" id="loginForm">
+                    @csrf
+
                     <div class="form-group">
-                        <label for="password">Password</label>
+                        <label for="email">Username</label>
                         <input 
-                            type="password" 
-                            id="password" 
-                            name="password" 
-                            placeholder="Masukkan Password"
-                            value="SimpleOkITSK!"
+                            type="text" 
+                            id="email" 
+                            name="email" 
+                            placeholder="Masukkan Username"
                             required
+                            autofocus
                         >
                     </div>
-                    <a href="#" class="forgot-password">Lupa Password?</a>
+
+                    <div class="password-wrapper">
+                        <div class="form-group" style="width:100%;">
+                            <label for="password">Password</label>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                placeholder="Masukkan Password"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Masuk</button>
+                </form>
+
+                <div class="divider">
+                    <span>atau</span>
                 </div>
 
-                <button type="submit" class="btn-submit">Masuk</button>
-            </form>
-
-            <div class="divider">
-                <span>atau</span>
-            </div>
-
-            <button type="button" class="btn-google" onclick="alert('Google login sedang tidak tersedia')">
+                <button type="button" class="btn-google" onclick="alert('Google login sedang tidak tersedia')">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                     <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -381,6 +521,64 @@
                 Dengan masuk, Anda menyetujui <a href="#">kebijakan privasi</a> dan <a href="#">kebijakan penggunaan sistem</a>.
             </div>
         </div>
+
+        <div class="login-panel">
+            <h3>Akses Cepat Peran</h3>
+            <p>Pilih salah satu akun yang tersedia, atau isi username & password di form.</p>
+
+            <div class="info-list">
+                <div class="info-item">
+                    <strong>DPJB</strong>
+                    Username: <code>DPJB</code><br>
+                    Password: <code>SimrsRSUD!</code>
+                    <button type="button" class="account-btn" data-username="DPJB" data-password="SimrsRSUD!">Pilih DPJB</button>
+                </div>
+                <div class="info-item">
+                    <strong>Admin</strong>
+                    Username: <code>AdminRSUD</code><br>
+                    Password: <code>SimrsRSUD!</code>
+                    <button type="button" class="account-btn" data-username="AdminRSUD" data-password="SimrsRSUD!">Pilih Admin</button>
+                </div>
+                <div class="info-item">
+                    <strong>TPP</strong>
+                    Username: <code>TPP</code><br>
+                    Password: <code>SimrsRSUD!</code>
+                    <button type="button" class="account-btn" data-username="TPP" data-password="SimrsRSUD!">Pilih TPP</button>
+                </div>
+                <div class="info-item">
+                    <strong>KPP</strong>
+                    Username: <code>KPP</code><br>
+                    Password: <code>SimrsRSUD!</code>
+                    <button type="button" class="account-btn" data-username="KPP" data-password="SimrsRSUD!">Pilih KPP</button>
+                </div>
+                <div class="info-item">
+                    <strong>Unit Farmasi</strong>
+                    Username: <code>Farmasi</code><br>
+                    Password: <code>SimrsRSUD!</code>
+                    <button type="button" class="account-btn" data-username="Farmasi" data-password="SimrsRSUD!">Pilih Farmasi</button>
+                </div>
+                <div class="info-item">
+                    <strong>Perawat Anestesi</strong>
+                    Username: <code>KepAnes</code><br>
+                    Password: <code>SimrsRSUD!</code>
+                    <button type="button" class="account-btn" data-username="KepAnes" data-password="SimrsRSUD!">Pilih KepAnes</button>
+                </div>
+            </div>
+
+            <button type="button" class="patient-button" onclick="location.href='{{ route('patient-dashboard') }}'">Masuk Sebagai Pasien</button>
+        </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.account-btn').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const username = this.dataset.username;
+                const password = this.dataset.password;
+                document.getElementById('email').value = username;
+                document.getElementById('password').value = password;
+                document.getElementById('email').focus();
+            });
+        });
+    </script>
 </body>
 </html>
