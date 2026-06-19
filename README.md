@@ -52,7 +52,78 @@ In order to ensure that the Laravel community is welcoming to all, please review
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Getting Started Locally
 
+These instructions help you clone the project and run it on another machine.
+
+### Clone repository
+
+```bash
+git clone https://github.com/yuzeyu115-arch/simrs-rsud-malang.git
+cd simrs-rsud-malang
+```
+
+### Install PHP dependencies
+
+Make sure you have PHP, Composer, and a local database installed. Then run:
+
+```bash
+composer install
+```
+
+### Copy environment file
+
+```bash
+cp .env.example .env
+```
+
+### Generate application key
+
+```bash
+php artisan key:generate
+```
+
+### Configure database
+
+Edit `.env` and set database connection values to your local environment. Example for MariaDB/MySQL:
+
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=simrs_rsu
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### Run database migrations and seeders
+
+If you want to initialize the database schema and sample data, run:
+
+```bash
+php artisan migrate --seed
+```
+
+### Serve the application
+
+```bash
+php artisan serve --host=127.0.0.1 --port=8000
+```
+
+Then open `http://127.0.0.1:8000` in your browser.
+
+### Default login accounts
+
+Use the following credentials for quick access:
+
+- DPJB / SimrsRSUD!
+- AdminRSUD / SimrsRSUD!
+- TPP / SimrsRSUD!
+- KPP / SimrsRSUD!
+- Farmasi / SimrsRSUD!
+- KepAnes / SimrsRSUD!
+
+Patients can access the system directly without login via the patient dashboard.
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
