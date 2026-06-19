@@ -98,6 +98,13 @@ Route::post('/login', function (\Illuminate\Http\Request $request) {
     }
 
     if (in_array(strtolower($user->username), ['dpjb', 'adminrsud', 'tpp', 'kpp', 'farmasi', 'kepanes'])) {
+        return redirect()->intended(route('dashboard'));
+    }
+
+    $target = $roleRoutes[$role] ?? route('dashboard');
+    return redirect()->intended($target);
+})->middleware('guest')->name('login.post');
+
 Route::get('/dashboard', function () {
     try {
         $totalRooms = DB::table('operating_rooms')->count();
