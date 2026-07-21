@@ -1,0 +1,44 @@
+[
+    {
+        "id": 19,
+        "username": "dpjbSimpleOk",
+        "email": "dpjbSimpleOk@simrs.local",
+        "role": "dokter",
+        "password": "$2y$12$3zEvcPIFLg0\/xVG6xwv67uO7pIWAji4\/ZwBO7XH9RnrtuqX6J28L."
+    },
+    {
+        "id": 21,
+        "username": "farmasiSImpleOk",
+        "email": "farmasiSImpleOk@simrs.local",
+        "role": "farmasi",
+        "password": "$2y$12$wXFkSt\/5iAe2nJeAVxM38O9wZ8DeleA2W24.Nq28kj9KB.mCsKLRi"
+    },
+    {
+        "id": 18,
+        "username": "kppSimpleOk",
+        "email": "kppSimpleOk@simrs.local",
+        "role": "kpp",
+        "password": "$2y$12$odjPvk4uflKUSxR1HUZ13.1fcttaKPTVt1JYlUu\/tCrGqTYZWyniC"
+    },
+    {
+        "id": 20,
+        "username": "peranSimpleOk",
+        "email": "peranSimpleOk@simrs.local",
+        "role": "anestesi",
+        "password": "$2y$12$QtmJTHvPBslHeYR6Q7dGC.Q4tnI39GerNnU2Twlt4OB4lkI\/mKeJi"
+    },
+    {
+        "id": 16,
+        "username": "simrsITSK",
+        "email": "simrsitsk@simrs.local",
+        "role": "admin",
+        "password": "$2y$12$Ya6tIsishpj\/KRDApTZM\/eDoBNBMf2\/arUTfamtb9qlWnk0Eb40JS"
+    },
+    {
+        "id": 17,
+        "username": "tppSimpleOk",
+        "email": "tppSimpleOk@simrs.local",
+        "role": "tpp",
+        "password": "$2y$12$mJtaPfjwZSMLTPi7r.EbBOZgEdiGZm5GTxVhE9We0lFG3vydnrFvO"
+    }
+]

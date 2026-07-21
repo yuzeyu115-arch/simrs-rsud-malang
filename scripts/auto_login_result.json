@@ -1,0 +1,37 @@
+[
+    {
+        "username": "tppSimpleOk",
+        "found": true,
+        "db_username": "tppSimpleOk",
+        "role": "tpp",
+        "can_login": true
+    },
+    {
+        "username": "kppSimpleOk",
+        "found": true,
+        "db_username": "kppSimpleOk",
+        "role": "kpp",
+        "can_login": true
+    },
+    {
+        "username": "dpjbSimpleOk",
+        "found": true,
+        "db_username": "dpjbSimpleOk",
+        "role": "dokter",
+        "can_login": true
+    },
+    {
+        "username": "peranSimpleOk",
+        "found": true,
+        "db_username": "peranSimpleOk",
+        "role": "anestesi",
+        "can_login": true
+    },
+    {
+        "username": "farmasiSImpleOk",
+        "found": true,
+        "db_username": "farmasiSImpleOk",
+        "role": "farmasi",
+        "can_login": true
+    }
+]

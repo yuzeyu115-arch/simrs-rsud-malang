@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  app:
+    build: ./docker/php
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - COMPOSER_ALLOW_SUPERUSER=1
+    command: bash -lc "composer install --no-interaction --prefer-dist && php artisan key:generate --ansi || true && php artisan serve --host=0.0.0.0 --port=8000"
+
+  db:
+    image: mariadb:10.6
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: simrs
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8080:80"
+
+volumes:
+  dbdata:
